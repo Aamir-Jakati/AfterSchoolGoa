@@ -16,7 +16,7 @@ export const metadata = {
   title: "After School Goa",
   description: "After School Goa – Learning & Activities",
   icons: {
-    icon: "/LOGO.jpg",
+    icon: "LOGO.jpg",
   },
 };
 
