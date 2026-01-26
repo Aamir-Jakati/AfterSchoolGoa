@@ -12,20 +12,40 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "After School Goa",
-  description: "After School Goa – Learning & Activities",
+export const metadata: Metadata = {
+  title: "After School Coaching Classes in Goa | IX–XII, NEET & JEE",
+  description:
+    "After School Goa offers expert after-school coaching for Classes IX–XII, NEET & JEE in Valpoi, Goa. Personalized attention, proven results, and holistic learning.",
+  keywords: [
+    "after school coaching Goa",
+    "coaching classes in Goa",
+    "NEET coaching Goa",
+    "JEE coaching Goa",
+    "Class 9 tuition Goa",
+    "Class 10 tuition Goa",
+    "Class 11 coaching Goa",
+    "Class 12 coaching Goa",
+    "Valpoi coaching classes",
+  ],
+  openGraph: {
+    title: "After School Coaching Classes in Goa",
+    description:
+      "Expert after-school coaching for Classes IX–XII, NEET & JEE in Valpoi, Goa.",
+    url: "https://afterschoolgoa.com",
+    siteName: "After School Goa",
+    locale: "en_IN",
+    type: "website",
+  },
   icons: {
-    icon: "LOGO.jpg",
+    icon: "/LOGO.jpg",
   },
 };
 
-
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body
