@@ -27,6 +27,9 @@ export const metadata: Metadata = {
     "Class 12 coaching Goa",
     "Valpoi coaching classes",
   ],
+   verification: {
+    google: "PASTE_THE_CODE_HERE",
+  },
   openGraph: {
     title: "After School Coaching Classes in Goa",
     description:
