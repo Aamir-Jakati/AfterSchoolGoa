@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Menu, X, BookOpen, Users, Phone, Mail, MapPin, GraduationCap, Target, Brain, Heart, Zap, ExternalLink } from 'lucide-react';
+import { Smartphone, Download, CheckCircle, Play, Apple } from "lucide-react";
+
 
 export default function AfterSchoolGoa() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,7 +15,7 @@ export default function AfterSchoolGoa() {
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-   
+
     const particles = [];
     class Particle {
       constructor() {
@@ -132,7 +134,7 @@ export default function AfterSchoolGoa() {
           </div>
 
           <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-            {[{num: '4+', txt: 'Years'}, {num: '1000+', txt: 'Students'}, {num: '8+', txt: 'Subjects'}, {num: '100%', txt: 'Dedication'}].map((stat, i) => (
+            {[{ num: '4+', txt: 'Years' }, { num: '1000+', txt: 'Students' }, { num: '8+', txt: 'Subjects' }, { num: '100%', txt: 'Dedication' }].map((stat, i) => (
               <div key={i} className="bg-slate-900/50 backdrop-blur-sm p-6 rounded-2xl border border-blue-500/20 hover:border-blue-400/50 transition-all transform hover:scale-105">
                 <div className="text-4xl font-black bg-gradient-to-r from-blue-400 to-yellow-400 bg-clip-text text-transparent">{stat.num}</div>
                 <div className="text-gray-400 mt-2">{stat.txt}</div>
@@ -151,12 +153,12 @@ export default function AfterSchoolGoa() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              {icon: BookOpen, title: 'Academic Excellence', desc: 'Comprehensive coaching for CBSE, Goa Board, NEET & JEE. Expert guidance in Physics, Chemistry, Biology, and Mathematics.'},
-              {icon: Brain, title: 'Critical Thinking', desc: 'Develop problem-solving skills and analytical abilities for real-world challenges and future opportunities.'},
-              {icon: Target, title: 'Leadership & Confidence', desc: 'Building strong leaders with enhanced self-confidence, communication and interpersonal skills.'},
-              {icon: Users, title: 'Life Skills', desc: 'Practical skill development focusing on self-development, time management, and personal growth.'},
-              {icon: Heart, title: 'Personal Attention', desc: 'Dedicated educator providing individual focus to help unlock each student\'s full potential.'},
-              {icon: Zap, title: 'Proven Results', desc: 'Track record of success in helping students achieve their academic goals and secure their future.'}
+              { icon: BookOpen, title: 'Academic Excellence', desc: 'Comprehensive coaching for CBSE, Goa Board, NEET & JEE. Expert guidance in Physics, Chemistry, Biology, and Mathematics.' },
+              { icon: Brain, title: 'Critical Thinking', desc: 'Develop problem-solving skills and analytical abilities for real-world challenges and future opportunities.' },
+              { icon: Target, title: 'Leadership & Confidence', desc: 'Building strong leaders with enhanced self-confidence, communication and interpersonal skills.' },
+              { icon: Users, title: 'Life Skills', desc: 'Practical skill development focusing on self-development, time management, and personal growth.' },
+              { icon: Heart, title: 'Personal Attention', desc: 'Dedicated educator providing individual focus to help unlock each student\'s full potential.' },
+              { icon: Zap, title: 'Proven Results', desc: 'Track record of success in helping students achieve their academic goals and secure their future.' }
             ].map((item, i) => (
               <div key={i} className="group bg-gradient-to-br from-slate-900/80 to-blue-900/20 p-8 rounded-3xl border border-blue-500/20 hover:border-yellow-400/60 transition-all transform hover:scale-105 hover:-translate-y-2">
                 <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-yellow-400 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform shadow-lg shadow-blue-500/30">
@@ -174,16 +176,16 @@ export default function AfterSchoolGoa() {
       <section id="programs" className="relative py-24 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-black mb-6">Our Programs</h2>
+            <h2 className="text-5xl md:text-6xl font-black mb-6">Our Services</h2>
             <div className="w-32 h-2 bg-gradient-to-r from-blue-400 to-yellow-400 mx-auto rounded-full mb-4"></div>
             <p className="text-xl text-gray-400">Comprehensive education for every grade and goal</p>
           </div>
           <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
             {[
-              {title: 'Class IX', desc: 'Foundation building for CBSE, NCERT & Goa Board. Strong fundamentals in all subjects with focus on board exam preparation.', tags: ['NCERT', 'CBSE', 'Goa Board'], roman: 'IX'},
-              {title: 'Class X', desc: 'Board exam preparation with comprehensive coverage of all subjects and practical skill development.', tags: ['Board Exams', 'CBSE', 'Goa Board'], roman: 'X'},
-              {title: 'Class XI', desc: 'Advanced preparation laying foundation for Class XII and competitive entrance exams.', tags: ['Physics', 'Chemistry', 'Maths', 'Biology'], roman: 'XI'},
-              {title: 'Class XII', desc: 'Final year board preparation with NEET & JEE coaching in PCM and PCB streams.', tags: ['NEET', 'JEE', 'Board Exams'], roman: 'XII'}
+              { title: 'Class IX', desc: 'Foundation building for CBSE, NCERT & Goa Board. Strong fundamentals in all subjects with focus on board exam preparation.', tags: ['NCERT', 'CBSE', 'Goa Board'], roman: 'IX' },
+              { title: 'Class X', desc: 'Board exam preparation with comprehensive coverage of all subjects and practical skill development.', tags: ['Board Exams', 'CBSE', 'Goa Board'], roman: 'X' },
+              { title: 'Class XI', desc: 'Advanced preparation laying foundation for Class XII and competitive entrance exams.', tags: ['Physics', 'Chemistry', 'Maths', 'Biology'], roman: 'XI' },
+              { title: 'Class XII', desc: 'Final year board preparation with NEET & JEE coaching in PCM and PCB streams.', tags: ['NEET', 'JEE', 'Board Exams'], roman: 'XII' }
             ].map((prog, i) => (
               <div key={i} className="bg-gradient-to-br from-blue-900/40 to-slate-900/60 p-10 rounded-3xl border-2 border-blue-500/30 hover:border-yellow-400/70 transition-all transform hover:scale-105 shadow-xl">
                 <div className="flex items-center gap-4 mb-6">
@@ -207,8 +209,8 @@ export default function AfterSchoolGoa() {
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl flex items-center justify-center shadow-lg shadow-yellow-500/40">
                   <svg className="text-white" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-                    <path d="M6 12v5c0 1 2 2 6 2s6-1 6-2v-5"/>
+                    <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                    <path d="M6 12v5c0 1 2 2 6 2s6-1 6-2v-5" />
                   </svg>
                 </div>
                 <h3 className="text-3xl font-bold text-yellow-300">NEET Coaching</h3>
@@ -224,8 +226,8 @@ export default function AfterSchoolGoa() {
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl flex items-center justify-center shadow-lg shadow-yellow-500/40">
                   <svg className="text-white" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="2" y="7" width="20" height="14" rx="2"/>
-                    <path d="M16 3v4M8 3v4M2 11h20"/>
+                    <rect x="2" y="7" width="20" height="14" rx="2" />
+                    <path d="M16 3v4M8 3v4M2 11h20" />
                   </svg>
                 </div>
                 <h3 className="text-3xl font-bold text-yellow-300">JEE Coaching</h3>
@@ -239,6 +241,95 @@ export default function AfterSchoolGoa() {
           </div>
         </div>
       </section>
+
+      {/* App Promotion */}
+      <section
+        id="app"
+        className="relative py-24 px-4 bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950"
+      >
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+
+          {/* Left content */}
+          <div>
+            <div className="inline-flex items-center gap-2 mb-4 px-5 py-2 bg-blue-500/20 border border-blue-400/40 rounded-full backdrop-blur-sm">
+              <Smartphone className="text-blue-300" size={18} />
+              <span className="text-blue-300 font-semibold">
+                Learn Anytime, Anywhere
+              </span>
+            </div>
+
+            <h2 className="text-5xl md:text-4xl font-black mb-6">
+              Get the{" "}
+              <span className="bg-gradient-to-r from-blue-400 via-yellow-400 to-blue-400 bg-clip-text text-transparent">
+                After-School App
+              </span>
+            </h2>
+
+            <p className="text-xl text-gray-300 mb-6 max-w-xl">
+              Access notes, assignments, important updates, and learning resources
+              directly on your phone. Stay connected with your studies beyond the
+              classroom.
+            </p>
+
+            <ul className="space-y-3 text-gray-400 mb-10">
+              <li className="flex items-center gap-3">
+                <CheckCircle className="text-blue-400" size={20} />
+                Study materials & notes
+              </li>
+              <li className="flex items-center gap-3">
+                <CheckCircle className="text-blue-400" size={20} />
+                Important announcements
+              </li>
+              <li className="flex items-center gap-3">
+                <CheckCircle className="text-blue-400" size={20} />
+                Easy communication & updates
+              </li>
+              <li className="flex items-center gap-3">
+                <CheckCircle className="text-blue-400" size={20} />
+                Designed for Classes IX–XII, NEET & JEE
+              </li>
+            </ul>
+
+            {/* Store buttons */}
+            <div className="flex flex-wrap gap-6">
+              <a
+                href="#"
+                className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-bold shadow-lg hover:shadow-blue-500/40 transition-all transform hover:scale-105"
+              >
+                <Play size={22} />
+                Play Store
+              </a>  
+
+              {/* <a
+                href="#"
+                className="flex items-center gap-3 px-8 py-4 bg-slate-900 border-2 border-blue-400 text-blue-300 rounded-xl font-bold hover:bg-blue-400/10 transition-all transform hover:scale-105"
+              >
+                <Apple size={22} />
+                App Store
+              </a> */}
+            </div>
+
+            {/* <p className="text-sm text-gray-500 mt-4">
+              App launching soon
+            </p> */}
+          </div>
+
+          {/* Right mockup */}
+          <div className="relative flex justify-center">
+            <div className="relative w-[260px] md:w-[320px] bg-slate-900 rounded-[2.5rem] border-4 border-blue-500/40 shadow-2xl shadow-blue-500/30 overflow-hidden">
+              <div className="h-6 bg-slate-950"></div>
+              <img
+                src="/app-screenshot.png"
+                alt="After School Goa App Screenshot"
+                className="w-full h-full object-cover"
+                onError={(e) => (e.currentTarget.style.display = "none")}
+              />
+            </div>
+          </div>
+
+        </div>
+      </section>
+
 
       {/* Contact */}
       <section id="contact" className="relative py-24 px-4 bg-slate-900/30">
@@ -279,7 +370,7 @@ export default function AfterSchoolGoa() {
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold mb-2">Email</h3>
-                  <p className="text-gray-400 text-lg">afterschoolgoa@gmail.com</p> 
+                  <p className="text-gray-400 text-lg">afterschoolgoa@gmail.com</p>
                 </div>
               </div>
 
@@ -301,7 +392,7 @@ export default function AfterSchoolGoa() {
             {/* Google Maps */}
             <div className="h-full min-h-[500px]">
               <div className="bg-slate-900/50 backdrop-blur-sm p-4 rounded-3xl border-2 border-blue-500/30 hover:border-blue-400/50 transition-all h-full shadow-xl">
-              <iframe
+                <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3844.0167922323303!2d74.137749!3d15.5372305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbfa1491a81bd9d%3A0xba642ce796da10fa!2sJakati's%20After-School%20Coaching%20Classes%20Valpoi!5e0!3m2!1sen!2sin!4v1769179938168!5m2!1sen!2sin"
                   width="100%"
                   height="100%"
@@ -317,12 +408,14 @@ export default function AfterSchoolGoa() {
         </div>
       </section>
 
+
       {/* Footer */}
       <footer className="bg-slate-950/80 border-t border-blue-500/20 py-8 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <div className="text-2xl font-black bg-gradient-to-r from-blue-400 via-yellow-400 to-blue-400 bg-clip-text text-transparent mb-2">AFTER-SCHOOL COACHING CLASSES</div>
           <p className="text-gray-400">© 2026 After-School Goa. All rights reserved.</p>
           <p className="text-blue-300 mt-2 font-semibold">ESTD: 2020 • IX, X, XI, XII</p>
+          <p className="text-gray-400">Made with love by @inovex_solutions</p>
         </div>
       </footer>
     </div>
