@@ -94,6 +94,7 @@ export default function AfterSchoolGoa() {
               <a href="#home" className="text-gray-300 hover:text-blue-400 transition-all font-medium">Home</a>
               <a href="#about" className="text-gray-300 hover:text-blue-400 transition-all font-medium">About</a>
               <a href="#programs" className="text-gray-300 hover:text-blue-400 transition-all font-medium">Services</a>
+              <a href="#app" className="text-gray-300 hover:text-blue-400 transition-all font-medium">App</a>
               <a href="#contact" className="text-gray-300 hover:text-blue-400 transition-all font-medium">Contact</a>
             </div>
             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden text-gray-300">
@@ -106,7 +107,8 @@ export default function AfterSchoolGoa() {
             <div className="px-4 py-6 space-y-4">
               <a href="#home" className="block text-gray-300 hover:text-blue-400 transition-all text-lg">Home</a>
               <a href="#about" className="block text-gray-300 hover:text-blue-400 transition-all text-lg">About</a>
-              <a href="#programs" className="block text-gray-300 hover:text-blue-400 transition-all text-lg">Programs</a>
+              <a href="#programs" className="block text-gray-300 hover:text-blue-400 transition-all text-lg">Services</a>
+              <a href="#app" className="block text-gray-300 hover:text-blue-400 transition-all text-lg">App</a>
               <a href="#contact" className="block text-gray-300 hover:text-blue-400 transition-all text-lg">Contact</a>
             </div>
           </div>
