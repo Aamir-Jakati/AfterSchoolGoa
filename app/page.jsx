@@ -293,7 +293,7 @@ export default function AfterSchoolGoa() {
             {/* Store buttons */}
             <div className="flex flex-wrap gap-6">
               <a
-                href="#"
+                href="https://play.google.com/store/apps/details?id=co.marshal.lwakl"
                 className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-bold shadow-lg hover:shadow-blue-500/40 transition-all transform hover:scale-105"
               >
                 <Play size={22} />
