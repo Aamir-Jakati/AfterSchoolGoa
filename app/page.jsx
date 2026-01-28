@@ -93,7 +93,7 @@ export default function AfterSchoolGoa() {
             <div className="hidden md:flex space-x-8">
               <a href="#home" className="text-gray-300 hover:text-blue-400 transition-all font-medium">Home</a>
               <a href="#about" className="text-gray-300 hover:text-blue-400 transition-all font-medium">About</a>
-              <a href="#programs" className="text-gray-300 hover:text-blue-400 transition-all font-medium">Programs</a>
+              <a href="#programs" className="text-gray-300 hover:text-blue-400 transition-all font-medium">Services</a>
               <a href="#contact" className="text-gray-300 hover:text-blue-400 transition-all font-medium">Contact</a>
             </div>
             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden text-gray-300">
