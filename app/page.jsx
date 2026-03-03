@@ -1,425 +1,807 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Menu, X, BookOpen, Users, Phone, Mail, MapPin, GraduationCap, Target, Brain, Heart, Zap, ExternalLink } from 'lucide-react';
-import { Smartphone, Download, CheckCircle, Play, Apple } from "lucide-react";
+import { Menu, X, ExternalLink, CheckCircle, Play, Smartphone, ArrowRight } from 'lucide-react';
 
+/* ─────────────────────────────────────────────
+   BRAND TOKENS  (extracted from logo)
+   Primary Blue  : #29ABE2
+   Deep Navy     : #0A2A4A
+   Accent Yellow : #FFC107
+   Accent Orange : #F7941D
+   White         : #FFFFFF
+   Light BG      : #F0F8FF
+───────────────────────────────────────────── */
 
 export default function AfterSchoolGoa() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const canvasRef = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeTab, setActiveTab] = useState('classes');
+  const heroRef = useRef(null);
 
   useEffect(() => {
-    if (!canvasRef.current) return;
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const particles = [];
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 3 + 1;
-        this.speedX = Math.random() * 1 - 0.5;
-        this.speedY = Math.random() * 1 - 0.5;
-        const colors = ['33, 150, 243', '255, 193, 7', '255, 235, 59'];
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        this.color = `rgba(${color}, ${Math.random() * 0.5 + 0.3})`;
-      }
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
-        if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
-      }
-      draw() {
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    for (let i = 0; i < 80; i++) particles.push(new Particle());
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach((p, i) => {
-        p.update();
-        p.draw();
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[j].x - p.x;
-          const dy = particles[j].y - p.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 100) {
-            ctx.strokeStyle = `rgba(33, 150, 243, ${0.15 - dist / 700})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.stroke();
-          }
-        }
-      });
-      requestAnimationFrame(animate);
-    }
-    animate();
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 text-white overflow-hidden">
-      <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full pointer-events-none opacity-30" />
+  /* Subtle geometric floating shapes — replaces particle canvas */
+  useEffect(() => {
+    const canvas = heroRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const resize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    resize();
+    window.addEventListener('resize', resize);
 
-      {/* Nav */}
-      <nav className="fixed w-full bg-slate-950/80 backdrop-blur-xl z-50 border-b border-blue-500/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-24">
-            <div className="flex items-center gap-4">
-              <img src="LOGO-removebg-preview (1).png" alt="After School Logo" className="h-16 w-16" onError={(e) => e.target.style.display = 'none'} />
-              <div>
-                <div className="text-2xl font-black bg-gradient-to-r from-blue-400 via-yellow-400 to-blue-400 bg-clip-text text-transparent">AFTER-SCHOOL</div>
-                <div className="text-sm text-blue-300 font-semibold">COACHING CLASSES</div>
-              </div>
+    const shapes = Array.from({ length: 20 }, (_, i) => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: 24 + Math.random() * 72,
+      vx: (Math.random() - 0.5) * 0.28,
+      vy: (Math.random() - 0.5) * 0.28,
+      type: i % 3,
+      alpha: 0.03 + Math.random() * 0.06,
+    }));
+
+    let raf;
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      shapes.forEach(s => {
+        s.x += s.vx; s.y += s.vy;
+        if (s.x < -s.r) s.x = canvas.width + s.r;
+        if (s.x > canvas.width + s.r) s.x = -s.r;
+        if (s.y < -s.r) s.y = canvas.height + s.r;
+        if (s.y > canvas.height + s.r) s.y = -s.r;
+
+        ctx.save();
+        ctx.globalAlpha = s.alpha;
+        ctx.strokeStyle = '#29ABE2';
+        ctx.fillStyle = '#29ABE2';
+        ctx.lineWidth = 1.5;
+
+        if (s.type === 0) {
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill();
+        } else if (s.type === 1) {
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.stroke();
+        } else {
+          ctx.beginPath();
+          for (let i = 0; i < 6; i++) {
+            const a = (Math.PI / 3) * i - Math.PI / 6;
+            i === 0
+              ? ctx.moveTo(s.x + s.r * Math.cos(a), s.y + s.r * Math.sin(a))
+              : ctx.lineTo(s.x + s.r * Math.cos(a), s.y + s.r * Math.sin(a));
+          }
+          ctx.closePath(); ctx.stroke();
+        }
+        ctx.restore();
+      });
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); };
+  }, []);
+
+  const navLinks = [
+    { href: '#home', label: 'Home' },
+    { href: '#about', label: 'Why Us' },
+    { href: '#programs', label: 'Courses' },
+    { href: '#app', label: 'App' },
+    { href: '#contact', label: 'Contact' },
+  ];
+
+  return (
+    <div style={{ fontFamily: "'DM Sans', sans-serif", background: '#F0F8FF', color: '#0A2A4A', overflowX: 'hidden' }}>
+
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #F0F8FF; }
+        ::-webkit-scrollbar-thumb { background: #29ABE2; border-radius: 3px; }
+        .serif { font-family: 'Playfair Display', serif; }
+
+        .nav-a {
+          color: #0A2A4A; font-weight: 600; font-size: 0.92rem;
+          text-decoration: none; position: relative; padding-bottom: 4px;
+          transition: color 0.2s;
+        }
+        .nav-a::after {
+          content: ''; position: absolute; bottom: 0; left: 0;
+          width: 0; height: 2px; background: #29ABE2;
+          border-radius: 2px; transition: width 0.3s ease;
+        }
+        .nav-a:hover { color: #29ABE2; }
+        .nav-a:hover::after { width: 100%; }
+
+        .btn-blue {
+          background: #29ABE2; color: #fff; border: none; cursor: pointer;
+          padding: 13px 30px; border-radius: 50px; font-weight: 700;
+          font-size: 0.95rem; font-family: 'DM Sans', sans-serif;
+          text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+          transition: all 0.25s ease;
+          box-shadow: 0 6px 20px rgba(41,171,226,0.35);
+        }
+        .btn-blue:hover { background: #1a96cc; transform: translateY(-2px); box-shadow: 0 12px 30px rgba(41,171,226,0.45); }
+
+        .btn-outline {
+          background: transparent; color: #29ABE2;
+          border: 2px solid #29ABE2; cursor: pointer;
+          padding: 12px 30px; border-radius: 50px; font-weight: 700;
+          font-size: 0.95rem; font-family: 'DM Sans', sans-serif;
+          text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+          transition: all 0.25s ease;
+        }
+        .btn-outline:hover { background: #29ABE2; color: #fff; transform: translateY(-2px); }
+
+        .card {
+          background: #fff; border-radius: 20px; padding: 28px;
+          border: 1.5px solid #D6EEFA;
+          transition: all 0.3s ease;
+          box-shadow: 0 2px 12px rgba(41,171,226,0.06);
+        }
+        .card:hover { transform: translateY(-6px); box-shadow: 0 18px 44px rgba(41,171,226,0.14); border-color: #29ABE2; }
+
+        .badge {
+          display: inline-flex; align-items: center; gap: 6px;
+          background: rgba(41,171,226,0.10); border: 1.5px solid rgba(41,171,226,0.25);
+          color: #1a96cc; font-size: 0.78rem; font-weight: 700;
+          padding: 5px 14px; border-radius: 50px;
+          text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px;
+        }
+
+        .tag {
+          display: inline-block; padding: 5px 14px;
+          background: rgba(41,171,226,0.08); border: 1.5px solid rgba(41,171,226,0.2);
+          color: #1a96cc; border-radius: 50px; font-size: 0.78rem; font-weight: 700;
+        }
+
+        .section-title {
+          font-family: 'Playfair Display', serif;
+          font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+          font-weight: 700; color: #0A2A4A; line-height: 1.2; margin-bottom: 14px;
+        }
+
+        .divider {
+          width: 52px; height: 4px;
+          background: linear-gradient(90deg, #29ABE2, #FFC107);
+          border-radius: 2px; margin-bottom: 20px;
+        }
+
+        .icon-box {
+          width: 54px; height: 54px; border-radius: 15px;
+          display: flex; align-items: center; justify-content: center;
+          font-size: 1.55rem; margin-bottom: 18px;
+        }
+
+        .stat-pill {
+          background: #fff; border: 1.5px solid #D6EEFA; border-radius: 16px;
+          padding: 18px 12px; text-align: center;
+          box-shadow: 0 2px 10px rgba(41,171,226,0.06);
+          transition: all 0.3s;
+        }
+        .stat-pill:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(41,171,226,0.14); }
+
+        .prog-card {
+          background: #fff; border-radius: 22px; padding: 30px;
+          border: 2px solid #D6EEFA;
+          box-shadow: 0 2px 14px rgba(41,171,226,0.07);
+          transition: all 0.3s;
+        }
+        .prog-card:hover { border-color: #29ABE2; transform: translateY(-6px); box-shadow: 0 20px 48px rgba(41,171,226,0.15); }
+
+        .testi-card {
+          background: #fff; border-radius: 20px; padding: 28px;
+          border: 1.5px solid #D6EEFA;
+          box-shadow: 0 2px 12px rgba(41,171,226,0.06);
+          transition: all 0.3s; position: relative;
+        }
+        .testi-card:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(41,171,226,0.13); }
+        .testi-card::before {
+          content: '"'; position: absolute; top: 14px; right: 20px;
+          font-family: 'Playfair Display', serif; font-size: 5rem; line-height: 1;
+          color: rgba(41,171,226,0.09); font-weight: 700; pointer-events: none;
+        }
+
+        .contact-row {
+          display: flex; align-items: flex-start; gap: 16px;
+          padding: 20px; background: #fff; border-radius: 18px;
+          border: 1.5px solid #D6EEFA; text-decoration: none; color: inherit;
+          transition: all 0.3s; box-shadow: 0 2px 10px rgba(41,171,226,0.05);
+        }
+        .contact-row:hover { border-color: #29ABE2; box-shadow: 0 8px 24px rgba(41,171,226,0.12); transform: translateX(4px); }
+
+        @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+        .float   { animation: floatY 4s ease-in-out infinite; }
+        .float-2 { animation: floatY 4s ease-in-out 1.3s infinite; }
+        .float-3 { animation: floatY 4s ease-in-out 2.6s infinite; }
+
+        @keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+        .fade-up  { animation: fadeUp 0.65s ease both; }
+        .d1 { animation-delay: 0.12s; }
+        .d2 { animation-delay: 0.25s; }
+        .d3 { animation-delay: 0.38s; }
+
+        .highlight { position: relative; display: inline-block; color: #29ABE2; }
+        .highlight::after {
+          content: ''; position: absolute; left: 0; bottom: -3px;
+          width: 100%; height: 4px;
+          background: linear-gradient(90deg, #FFC107, #F7941D);
+          border-radius: 2px;
+        }
+
+        .enroll-banner {
+          background: linear-gradient(135deg, #0A2A4A 0%, #0e3d6b 100%);
+          border-radius: 28px; padding: 56px 40px; text-align: center;
+          position: relative; overflow: hidden;
+        }
+        .enroll-banner::before {
+          content: ''; position: absolute; inset: 0;
+          background: radial-gradient(circle at 80% 20%, rgba(41,171,226,0.18) 0%, transparent 60%),
+                      radial-gradient(circle at 10% 80%, rgba(255,193,7,0.10) 0%, transparent 50%);
+          pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+          .desk { display: none !important; }
+          .mob-menu-btn { display: block !important; }
+          .hero-grid, .app-grid, .contact-grid { grid-template-columns: 1fr !important; }
+          .hero-right, .app-right { display: none !important; }
+        }
+        @media (min-width: 769px) {
+          .mob-menu-btn { display: none !important; }
+          .mob-drawer { display: none !important; }
+        }
+      `}</style>
+
+      {/* ══ NAV ══ */}
+      <nav style={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
+        background: scrolled ? 'rgba(240,248,255,0.97)' : 'rgba(240,248,255,0.5)',
+        backdropFilter: 'blur(18px)',
+        borderBottom: scrolled ? '1.5px solid #D6EEFA' : '1.5px solid transparent',
+        transition: 'all 0.3s ease', padding: '0 5%',
+      }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 70 }}>
+          <a href="#home" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
+            <img src="LOGO-removebg-preview (1).png" alt="Logo" style={{ height: 44, width: 44, objectFit: 'contain' }} onError={e => e.target.style.display='none'} />
+            <div>
+              <div style={{ fontFamily: 'Playfair Display,serif', fontSize: '1.1rem', fontWeight: 700, color: '#0A2A4A', lineHeight: 1.1 }}>After-School</div>
+              <div style={{ fontSize: '0.62rem', fontWeight: 700, color: '#29ABE2', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Coaching Classes · Goa</div>
             </div>
-            <div className="hidden md:flex space-x-8">
-              <a href="#home" className="text-gray-300 hover:text-blue-400 transition-all font-medium">Home</a>
-              <a href="#about" className="text-gray-300 hover:text-blue-400 transition-all font-medium">About</a>
-              <a href="#programs" className="text-gray-300 hover:text-blue-400 transition-all font-medium">Services</a>
-              <a href="#app" className="text-gray-300 hover:text-blue-400 transition-all font-medium">App</a>
-              <a href="#contact" className="text-gray-300 hover:text-blue-400 transition-all font-medium">Contact</a>
-            </div>
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden text-gray-300">
-              {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-            </button>
+          </a>
+
+          <div className="desk" style={{ display: 'flex', alignItems: 'center', gap: 34 }}>
+            {navLinks.map(l => <a key={l.href} href={l.href} className="nav-a">{l.label}</a>)}
+            <a href="#contact" className="btn-blue" style={{ padding: '9px 20px', fontSize: '0.87rem' }}>Enroll Now →</a>
           </div>
+
+          <button className="mob-menu-btn" onClick={() => setMenuOpen(!menuOpen)}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#0A2A4A' }}>
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
         </div>
-        {isMenuOpen && (
-          <div className="md:hidden bg-slate-950/95 backdrop-blur-xl border-t border-blue-500/20">
-            <div className="px-4 py-6 space-y-4">
-              <a href="#home" className="block text-gray-300 hover:text-blue-400 transition-all text-lg">Home</a>
-              <a href="#about" className="block text-gray-300 hover:text-blue-400 transition-all text-lg">About</a>
-              <a href="#programs" className="block text-gray-300 hover:text-blue-400 transition-all text-lg">Services</a>
-              <a href="#app" className="block text-gray-300 hover:text-blue-400 transition-all text-lg">App</a>
-              <a href="#contact" className="block text-gray-300 hover:text-blue-400 transition-all text-lg">Contact</a>
-            </div>
+
+        {menuOpen && (
+          <div className="mob-drawer" style={{ background: '#fff', borderTop: '1.5px solid #D6EEFA', padding: '14px 5% 22px' }}>
+            {navLinks.map(l => (
+              <a key={l.href} href={l.href} onClick={() => setMenuOpen(false)}
+                style={{ display: 'block', padding: '12px 0', color: '#0A2A4A', fontWeight: 600, textDecoration: 'none', borderBottom: '1px solid #EFF8FF', fontSize: '1rem' }}>
+                {l.label}
+              </a>
+            ))}
+            <a href="#contact" className="btn-blue" style={{ marginTop: 18, justifyContent: 'center', width: '100%' }}>Enroll Now →</a>
           </div>
         )}
       </nav>
 
-      {/* Hero */}
-      <section id="home" className="relative pt-32 pb-20 px-4 min-h-screen flex items-center">
-        <div className="max-w-7xl mx-auto w-full text-center relative z-10">
-          <div className="inline-block mb-6 px-6 py-2 bg-blue-500/20 border border-blue-400/40 rounded-full backdrop-blur-sm">
-            <span className="text-blue-300 font-semibold">💡 Established 2020 • Valpoi, Goa</span>
-          </div>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight">
-            <span className="block text-white">Unlock Your</span>
-            <span className="block bg-gradient-to-r from-blue-400 via-yellow-400 to-blue-400 bg-clip-text text-transparent">Full Potential</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-3xl mx-auto">Expert Coaching for Classes IX - XII | NEET | JEE</p>
-          <p className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto">Where academic excellence meets life skills, leadership, and confidence building</p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <a href="#contact" className="group px-10 py-5 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-full font-bold text-lg shadow-xl shadow-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/50 transition-all transform hover:scale-110 flex items-center gap-3 justify-center">
-              <span>Enroll Now</span>
-              <Zap className="group-hover:rotate-12 transition-transform" size={24} />
-            </a>
-            <a href="#programs" className="px-10 py-5 bg-transparent border-2 border-blue-400 text-blue-300 rounded-full font-bold text-lg hover:bg-blue-400/10 transition-all transform hover:scale-105">View Programs</a>
-          </div>
+      {/* ══ HERO ══ */}
+      <section id="home" style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', padding: '96px 5% 64px', overflow: 'hidden', background: '#F0F8FF' }}>
+        <canvas ref={heroRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: '8%', right: '3%', width: 440, height: 440, borderRadius: '50%', background: 'radial-gradient(circle, rgba(41,171,226,0.11) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: '4%', left: '-2%', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,193,7,0.09) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
-          <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-            {[{ num: '4+', txt: 'Years' }, { num: '1000+', txt: 'Students' }, { num: '8+', txt: 'Subjects' }, { num: '100%', txt: 'Dedication' }].map((stat, i) => (
-              <div key={i} className="bg-slate-900/50 backdrop-blur-sm p-6 rounded-2xl border border-blue-500/20 hover:border-blue-400/50 transition-all transform hover:scale-105">
-                <div className="text-4xl font-black bg-gradient-to-r from-blue-400 to-yellow-400 bg-clip-text text-transparent">{stat.num}</div>
-                <div className="text-gray-400 mt-2">{stat.txt}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 56, alignItems: 'center', position: 'relative', zIndex: 2 }} className="hero-grid">
 
-      {/* About */}
-      <section id="about" className="relative py-24 px-4 bg-slate-900/30">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-black mb-6">Why Choose Us?</h2>
-            <div className="w-32 h-2 bg-gradient-to-r from-blue-400 to-yellow-400 mx-auto rounded-full"></div>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { icon: BookOpen, title: 'Academic Excellence', desc: 'Comprehensive coaching for CBSE, Goa Board, NEET & JEE. Expert guidance in Physics, Chemistry, Biology, and Mathematics.' },
-              { icon: Brain, title: 'Critical Thinking', desc: 'Develop problem-solving skills and analytical abilities for real-world challenges and future opportunities.' },
-              { icon: Target, title: 'Leadership & Confidence', desc: 'Building strong leaders with enhanced self-confidence, communication and interpersonal skills.' },
-              { icon: Users, title: 'Life Skills', desc: 'Practical skill development focusing on self-development, time management, and personal growth.' },
-              { icon: Heart, title: 'Personal Attention', desc: 'Dedicated educator providing individual focus to help unlock each student\'s full potential.' },
-              { icon: Zap, title: 'Proven Results', desc: 'Track record of success in helping students achieve their academic goals and secure their future.' }
-            ].map((item, i) => (
-              <div key={i} className="group bg-gradient-to-br from-slate-900/80 to-blue-900/20 p-8 rounded-3xl border border-blue-500/20 hover:border-yellow-400/60 transition-all transform hover:scale-105 hover:-translate-y-2">
-                <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-yellow-400 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-12 transition-transform shadow-lg shadow-blue-500/30">
-                  <item.icon className="text-white" size={36} />
-                </div>
-                <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
-                <p className="text-gray-400">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Programs */}
-      <section id="programs" className="relative py-24 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-black mb-6">Our Services</h2>
-            <div className="w-32 h-2 bg-gradient-to-r from-blue-400 to-yellow-400 mx-auto rounded-full mb-4"></div>
-            <p className="text-xl text-gray-400">Comprehensive education for every grade and goal</p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {[
-              { title: 'Class IX', desc: 'Foundation building for CBSE, NCERT & Goa Board. Strong fundamentals in all subjects with focus on board exam preparation.', tags: ['NCERT', 'CBSE', 'Goa Board'], roman: 'IX' },
-              { title: 'Class X', desc: 'Board exam preparation with comprehensive coverage of all subjects and practical skill development.', tags: ['Board Exams', 'CBSE', 'Goa Board'], roman: 'X' },
-              { title: 'Class XI', desc: 'Advanced preparation laying foundation for Class XII and competitive entrance exams.', tags: ['Physics', 'Chemistry', 'Maths', 'Biology'], roman: 'XI' },
-              { title: 'Class XII', desc: 'Final year board preparation with NEET & JEE coaching in PCM and PCB streams.', tags: ['NEET', 'JEE', 'Board Exams'], roman: 'XII' }
-            ].map((prog, i) => (
-              <div key={i} className="bg-gradient-to-br from-blue-900/40 to-slate-900/60 p-10 rounded-3xl border-2 border-blue-500/30 hover:border-yellow-400/70 transition-all transform hover:scale-105 shadow-xl">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-yellow-400 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/40">
-                    <span className="text-3xl font-black text-white">{prog.roman}</span>
-                  </div>
-                  <h3 className="text-3xl font-bold">{prog.title}</h3>
-                </div>
-                <p className="text-gray-300 mb-6 leading-relaxed">{prog.desc}</p>
-                <div className="flex flex-wrap gap-2">
-                  {prog.tags.map((tag, j) => (
-                    <span key={j} className="px-4 py-2 bg-blue-500/20 border border-blue-400/40 rounded-full text-blue-300 text-sm font-medium">{tag}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-16 max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
-            <div className="bg-gradient-to-br from-yellow-900/30 to-blue-900/40 p-10 rounded-3xl border-2 border-yellow-400/40 hover:border-yellow-400/70 transition-all transform hover:scale-105 shadow-xl">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl flex items-center justify-center shadow-lg shadow-yellow-500/40">
-                  <svg className="text-white" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-                    <path d="M6 12v5c0 1 2 2 6 2s6-1 6-2v-5" />
-                  </svg>
-                </div>
-                <h3 className="text-3xl font-bold text-yellow-300">NEET Coaching</h3>
-              </div>
-              <p className="text-gray-300 mb-6 leading-relaxed">Specialized preparation for medical entrance exams with comprehensive coverage of Physics, Chemistry, and Biology for aspiring doctors.</p>
-              <div className="flex flex-wrap gap-2">
-                <span className="px-4 py-2 bg-yellow-500/20 border border-yellow-400/40 rounded-full text-yellow-300 text-sm font-medium">PCB</span>
-                <span className="px-4 py-2 bg-yellow-500/20 border border-yellow-400/40 rounded-full text-yellow-300 text-sm font-medium">Medical</span>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-yellow-900/30 to-blue-900/40 p-10 rounded-3xl border-2 border-yellow-400/40 hover:border-yellow-400/70 transition-all transform hover:scale-105 shadow-xl">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl flex items-center justify-center shadow-lg shadow-yellow-500/40">
-                  <svg className="text-white" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="2" y="7" width="20" height="14" rx="2" />
-                    <path d="M16 3v4M8 3v4M2 11h20" />
-                  </svg>
-                </div>
-                <h3 className="text-3xl font-bold text-yellow-300">JEE Coaching</h3>
-              </div>
-              <p className="text-gray-300 mb-6 leading-relaxed">Strategic preparation for engineering entrance exams with advanced problem-solving in Physics, Chemistry, and Mathematics.</p>
-              <div className="flex flex-wrap gap-2">
-                <span className="px-4 py-2 bg-yellow-500/20 border border-yellow-400/40 rounded-full text-yellow-300 text-sm font-medium">PCM</span>
-                <span className="px-4 py-2 bg-yellow-500/20 border border-yellow-400/40 rounded-full text-yellow-300 text-sm font-medium">Engineering</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* App Promotion */}
-      <section
-        id="app"
-        className="relative py-24 px-4 bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950"
-      >
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
-
-          {/* Left content */}
+          {/* LEFT */}
           <div>
-            <div className="inline-flex items-center gap-2 mb-4 px-5 py-2 bg-blue-500/20 border border-blue-400/40 rounded-full backdrop-blur-sm">
-              <Smartphone className="text-blue-300" size={18} />
-              <span className="text-blue-300 font-semibold">
-                Learn Anytime, Anywhere
-              </span>
-            </div>
-
-            <h2 className="text-5xl md:text-4xl font-black mb-6">
-              Get the{" "}
-              <span className="bg-gradient-to-r from-blue-400 via-yellow-400 to-blue-400 bg-clip-text text-transparent">
-                After-School App
-              </span>
-            </h2>
-
-            <p className="text-xl text-gray-300 mb-6 max-w-xl">
-              Access notes, assignments, important updates, and learning resources
-              directly on your phone. Stay connected with your studies beyond the
-              classroom.
+            <div className="badge fade-up">🌟 Est. 2022 · Valpoi, Goa</div>
+            <h1 className="fade-up d1" style={{ fontFamily: 'Playfair Display,serif', fontSize: 'clamp(2.2rem, 4.2vw, 3.5rem)', fontWeight: 800, color: '#0A2A4A', lineHeight: 1.15, marginBottom: 20 }}>
+              Where Students{' '}
+              <span className="highlight">Shine</span>
+              {' '}& Futures{' '}
+              <span style={{ color: '#F7941D' }}>Get Built</span>
+            </h1>
+            <p className="fade-up d2" style={{ fontSize: '1.05rem', color: '#4A7A9B', lineHeight: 1.8, marginBottom: 34, maxWidth: 450 }}>
+              Expert coaching for Classes IX–XII, NEET & JEE in Goa. We blend academic excellence with life skills, confidence, and critical thinking.
             </p>
-
-            <ul className="space-y-3 text-gray-400 mb-10">
-              <li className="flex items-center gap-3">
-                <CheckCircle className="text-blue-400" size={20} />
-                Study materials & notes
-              </li>
-              <li className="flex items-center gap-3">
-                <CheckCircle className="text-blue-400" size={20} />
-                Important announcements
-              </li>
-              <li className="flex items-center gap-3">
-                <CheckCircle className="text-blue-400" size={20} />
-                Easy communication & updates
-              </li>
-              <li className="flex items-center gap-3">
-                <CheckCircle className="text-blue-400" size={20} />
-                Designed for Classes IX–XII, NEET & JEE
-              </li>
-            </ul>
-
-            {/* Store buttons */}
-            <div className="flex flex-wrap gap-6">
-              <a
-                href="https://play.google.com/store/apps/details?id=co.marshal.lwakl"
-                className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl font-bold shadow-lg hover:shadow-blue-500/40 transition-all transform hover:scale-105"
-              >
-                <Play size={22} />
-                Play Store
-              </a>  
-
-              {/* <a
-                href="#"
-                className="flex items-center gap-3 px-8 py-4 bg-slate-900 border-2 border-blue-400 text-blue-300 rounded-xl font-bold hover:bg-blue-400/10 transition-all transform hover:scale-105"
-              >
-                <Apple size={22} />
-                App Store
-              </a> */}
+            <div className="fade-up d3" style={{ display: 'flex', gap: 13, flexWrap: 'wrap', marginBottom: 48 }}>
+              <a href="#contact" className="btn-blue">Enroll Now 🚀</a>
+              <a href="#programs" className="btn-outline">Explore Courses</a>
             </div>
-
-            {/* <p className="text-sm text-gray-500 mt-4">
-              App launching soon
-            </p> */}
-          </div>
-
-          {/* Right mockup */}
-          <div className="relative flex justify-center">
-            <div className="relative w-[260px] md:w-[320px] bg-slate-900 rounded-[2.5rem] border-4 border-blue-500/40 shadow-2xl shadow-blue-500/30 overflow-hidden">
-              <div className="h-6 bg-slate-950"></div>
-              <img
-                src="/app-screenshot.png"
-                alt="After School Goa App Screenshot"
-                className="w-full h-full object-cover"
-                onError={(e) => (e.currentTarget.style.display = "none")}
-              />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12 }}>
+              {[{ num: '4+', label: 'Years' }, { num: '1000+', label: 'Students' }, { num: '8+', label: 'Subjects' }, { num: '100%', label: 'Dedication' }].map((s, i) => (
+                <div key={i} className="stat-pill">
+                  <div style={{ fontFamily: 'Playfair Display,serif', fontSize: '1.65rem', fontWeight: 700, color: '#29ABE2' }}>{s.num}</div>
+                  <div style={{ fontSize: '0.68rem', fontWeight: 700, color: '#94B8CB', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{s.label}</div>
+                </div>
+              ))}
             </div>
           </div>
 
+          {/* RIGHT */}
+          <div className="hero-right" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', height: 450 }}>
+            <div className="float" style={{ width: 270, height: 270, borderRadius: '50%', background: 'linear-gradient(135deg, #29ABE2 0%, #1a7fb0 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 32px 80px rgba(41,171,226,0.28)', fontSize: '7rem' }}>
+              💡
+            </div>
+            {[
+              { cls: 'float-2', top: '6%', right: '2%', bg: '#fff', color: '#0A2A4A', border: '2px solid #D6EEFA', shadow: '0 8px 24px rgba(41,171,226,0.16)', text: '🩺 NEET Coaching' },
+              { cls: 'float-3', bottom: '16%', left: '0%', bg: '#fff', color: '#0A2A4A', border: '2px solid #D6EEFA', shadow: '0 8px 24px rgba(41,171,226,0.16)', text: '⚙️ JEE Coaching' },
+              { cls: 'float', top: '40%', right: '-6%', bg: 'linear-gradient(135deg,#FFC107,#F7941D)', color: '#fff', border: 'none', shadow: '0 8px 24px rgba(247,148,29,0.30)', text: '🎓 Class IX–XII' },
+              { cls: '', bottom: '4%', right: '8%', bg: '#0A2A4A', color: '#fff', border: 'none', shadow: '0 8px 24px rgba(10,42,74,0.22)', text: '📍 Valpoi, Goa' },
+            ].map((b, i) => (
+              <div key={i} className={b.cls} style={{ position: 'absolute', top: b.top, right: b.right, bottom: b.bottom, left: b.left, background: b.bg, color: b.color, border: b.border, borderRadius: 16, padding: '12px 16px', boxShadow: b.shadow, fontWeight: 700, fontSize: '0.86rem', whiteSpace: 'nowrap' }}>
+                {b.text}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-
-      {/* Contact */}
-      <section id="contact" className="relative py-24 px-4 bg-slate-900/30">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl md:text-6xl font-black mb-6">Get In Touch</h2>
-            <div className="w-32 h-2 bg-gradient-to-r from-blue-400 to-yellow-400 mx-auto rounded-full mb-4"></div>
-            <p className="text-xl text-gray-400">Visit us or reach out for inquiries</p>
+      {/* ══ WHY CHOOSE US ══ */}
+      <section id="about" style={{ padding: '86px 5%', background: '#fff' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 56 }}>
+            <div className="badge" style={{ margin: '0 auto 16px' }}>Why AfterSchool?</div>
+            <div className="divider" style={{ margin: '0 auto 18px' }} />
+            <h2 className="section-title" style={{ textAlign: 'center' }}>More than just coaching</h2>
+            <p style={{ color: '#4A7A9B', fontSize: '0.98rem', maxWidth: 500, margin: '0 auto', lineHeight: 1.75 }}>We build students who are confident, curious, and ready for anything — not just exam-ready.</p>
           </div>
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="space-y-8">
-              <div className="flex items-start gap-6 group">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-yellow-400 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/30">
-                  <MapPin className="text-white" size={28} />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(285px,1fr))', gap: 20 }}>
+            {[
+              { emoji: '📖', title: 'Academic Excellence', desc: 'Comprehensive coaching for CBSE, Goa Board, NEET & JEE with expert guidance in Physics, Chemistry, Biology, and Maths.', accent: '#29ABE2' },
+              { emoji: '🧠', title: 'Critical Thinking', desc: 'We develop problem-solving and analytical abilities for board exams, competitive tests, and real-world challenges.', accent: '#FFC107' },
+              { emoji: '🎯', title: 'Leadership & Confidence', desc: 'Building self-confidence, communication, and interpersonal skills that last a lifetime — not just until exam day.', accent: '#F7941D' },
+              { emoji: '🤝', title: 'Life Skills', desc: 'Practical skill development in time management, self-discipline, and personal growth that every student needs.', accent: '#29ABE2' },
+              { emoji: '💛', title: 'Personal Attention', desc: 'Individual focus on every student. We genuinely care about your progress and help unlock your full potential.', accent: '#FFC107' },
+              { emoji: '⚡', title: 'Proven Results', desc: 'A strong track record of students who cracked NEET, JEE, and board exams with flying colours since 2022.', accent: '#F7941D' },
+            ].map((item, i) => (
+              <div key={i} className="card">
+                <div className="icon-box" style={{ background: `${item.accent}14`, border: `1.5px solid ${item.accent}28` }}>{item.emoji}</div>
+                <h3 style={{ fontFamily: 'Playfair Display,serif', fontSize: '1.08rem', fontWeight: 700, color: '#0A2A4A', marginBottom: 9 }}>{item.title}</h3>
+                <p style={{ color: '#4A7A9B', lineHeight: 1.72, fontSize: '0.91rem' }}>{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══ COURSES ══ */}
+<section id="programs" style={{ padding: '88px 5%', background: '#fff' }}>
+  <div style={{ maxWidth: 1240, margin: '0 auto' }}>
+
+    {/* Header */}
+    <div style={{ marginBottom: 48 }}>
+      <div className="section-line" />
+      <span className="section-label">What We Offer</span>
+      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+        <h2 className="serif" style={{ fontSize: 'clamp(1.8rem,3.5vw,2.5rem)', fontWeight: 700, color: '#0A2A4A', maxWidth: 480 }}>
+          Courses Built for Every Goal
+        </h2>
+        <p style={{ color: '#64748B', fontSize: '.93rem', maxWidth: 360, lineHeight: 1.72 }}>
+          From building strong foundations to cracking the toughest entrances — a program for every student.
+        </p>
+      </div>
+    </div>
+
+    {/* ── TABS ── */}
+    <div style={{ display: 'flex', gap: 8, marginBottom: 36, background: '#F1F5F9', borderRadius: 10, padding: 6, width: 'fit-content' }}>
+      {['Classes', 'Entrance Exams'].map((tab, i) => (
+        <button key={i} onClick={() => setActiveTab(i === 0 ? 'classes' : 'entrance')}
+          style={{
+            padding: '10px 28px', borderRadius: 7, border: 'none', cursor: 'pointer',
+            fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: '.9rem',
+            transition: 'all .22s',
+            background: activeTab === (i === 0 ? 'classes' : 'entrance') ? '#fff' : 'transparent',
+            color:      activeTab === (i === 0 ? 'classes' : 'entrance') ? '#0A2A4A' : '#64748B',
+            boxShadow:  activeTab === (i === 0 ? 'classes' : 'entrance') ? '0 2px 8px rgba(0,0,0,.10)' : 'none',
+          }}>
+          {tab}
+        </button>
+      ))}
+    </div>
+
+    {/* ── CLASS CARDS ── */}
+    {activeTab === 'classes' && (
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20 }}>
+        {[
+          { roman: 'VI',   title: 'Class VI',   label: 'Foundation', color: '#29ABE2', light: '#EFF9FF', tags: ['Goa Board', 'NCERT', 'CBSE', 'NEP'],              desc: 'Build a solid academic base with core subjects — the first step toward a brilliant future.' },
+          { roman: 'VII',  title: 'Class VII',  label: 'Foundation', color: '#29ABE2', light: '#EFF9FF', tags: ['Goa Board', 'NCERT', 'CBSE', 'NEP'],              desc: 'Strengthen foundational knowledge with engaging, concept-first teaching across all subjects.' },
+          { roman: 'VIII', title: 'Class VIII', label: 'Foundation', color: '#29ABE2', light: '#EFF9FF', tags: ['Goa Board', 'NCERT', 'CBSE', 'NEP'],              desc: 'Prepare for secondary education with comprehensive coverage and strong fundamentals.' },
+          { roman: 'IX',   title: 'Class IX',   label: 'Secondary',  color: '#1565A8', light: '#EFF4FF', tags: ['Goa Board', 'NCERT', 'CBSE', 'NEP'],              desc: 'Begin secondary-level learning with structured subject coaching and exam readiness.' },
+          { roman: 'X',    title: 'Class X',    label: 'Board Prep', color: '#0A2A4A', light: '#EEF2FF', tags: ['Goa Board', 'CBSE', 'NEP'],                       desc: 'Focused board exam preparation with mock tests, full coverage, and personalised attention.' },
+          { roman: 'XI',   title: 'Class XI',   label: 'Senior',     color: '#7C3AED', light: '#F5F3FF', tags: ['Physics', 'Chemistry', 'Biology', 'Maths'],        desc: 'Transition to senior secondary with stream specialisation and competitive exam groundwork.' },
+          { roman: 'XII',  title: 'Class XII',  label: 'Final Year', color: '#DC2626', light: '#FFF5F5', tags: ['Physics', 'Chemistry', 'Biology', 'Maths', 'JEE', 'NEET'], desc: 'Intensive final year coaching for boards with simultaneous NEET & JEE preparation.' },
+        ].map((p, i) => (
+          <div key={i} style={{
+            background: '#fff', border: '1.5px solid #E2EBF4', borderRadius: 14,
+            padding: '26px 22px', transition: 'all .25s', position: 'relative', overflow: 'hidden',
+          }}
+            onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,.09)'; e.currentTarget.style.borderColor = p.color; }}
+            onMouseOut={e  => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#E2EBF4'; }}>
+
+            {/* Left color strip */}
+            <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: 4, background: p.color, borderRadius: '14px 0 0 14px' }} />
+
+            {/* Top row */}
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14, paddingLeft: 10 }}>
+              <div>
+                <div style={{ fontFamily: 'Playfair Display,serif', fontSize: '1.25rem', fontWeight: 800, color: '#0A2A4A', lineHeight: 1.1 }}>
+                  {p.title}
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold mb-2">Location</h3>
-                  <p className="text-gray-400 text-lg">Valpoi, Goa 403506</p>
-                  <p className="text-blue-300">India</p>
+                <div style={{ fontSize: '.72rem', fontWeight: 700, color: p.color, textTransform: 'uppercase', letterSpacing: '.07em', marginTop: 4 }}>
+                  {p.label}
                 </div>
               </div>
+              {/* Roman numeral pill */}
+              <div style={{ background: p.light, border: `1.5px solid ${p.color}33`, borderRadius: 8, padding: '6px 12px', fontFamily: 'Playfair Display,serif', fontWeight: 800, fontSize: '1rem', color: p.color, lineHeight: 1 }}>
+                {p.roman}
+              </div>
+            </div>
 
-              <div className="flex items-start gap-6 group">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-yellow-400 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/30">
-                  <Phone className="text-white" size={28} />
+            {/* Desc */}
+            <p style={{ color: '#64748B', fontSize: '.87rem', lineHeight: 1.72, marginBottom: 18, paddingLeft: 10 }}>{p.desc}</p>
+
+            {/* Tags */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, paddingLeft: 10 }}>
+              {p.tags.map((t, j) => (
+                <span key={j} style={{
+                  padding: '4px 11px', borderRadius: 6,
+                  background: p.light, border: `1px solid ${p.color}33`,
+                  fontSize: '.73rem', fontWeight: 700, color: p.color,
+                }}>{t}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+
+    {/* ── ENTRANCE CARDS ── */}
+    {activeTab === 'entrance' && (
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 24 }}>
+        {[
+          {
+            id: 'NEET',
+            title: 'NEET Coaching',
+            subtitle: 'Medical Entrance Exam',
+            color: '#DC2626',
+            light: '#FFF5F5',
+            border: '#FECACA',
+            gradient: 'linear-gradient(135deg, #DC2626, #B91C1C)',
+            desc: 'Specialized preparation for medical entrances with deep, concept-driven coverage of Physics, Chemistry & Biology. Our NEET batch follows a structured timetable with weekly tests, doubt sessions, and exam strategy coaching to maximize your score.',
+            tags: ['Physics', 'Chemistry', 'Biology', 'PCB', 'Medical'],
+            highlights: ['Weekly full syllabus tests', 'Dedicated doubt clearing sessions', 'NCERT-focused approach', 'Previous year paper analysis'],
+          },
+          {
+            id: 'JEE',
+            title: 'JEE Coaching',
+            subtitle: 'Engineering Entrance Exam',
+            color: '#2563EB',
+            light: '#EFF6FF',
+            border: '#BFDBFE',
+            gradient: 'linear-gradient(135deg, #2563EB, #1D4ED8)',
+            desc: 'Strategic JEE preparation with advanced problem-solving techniques across PCM. We focus on building strong conceptual understanding alongside speed and accuracy — the two pillars of cracking JEE Mains and Advanced.',
+            tags: ['Physics', 'Chemistry', 'Maths', 'PCM', 'Engineering'],
+            highlights: ['Concept-first teaching approach', 'JEE Mains & Advanced coverage', 'Speed & accuracy drills', 'Topic-wise mock tests'],
+          },
+        ].map((p, i) => (
+          <div key={i} style={{
+            background: '#fff', border: `2px solid ${p.border}`,
+            borderRadius: 16, overflow: 'hidden',
+            boxShadow: '0 4px 20px rgba(0,0,0,.06)',
+            transition: 'all .28s',
+          }}
+            onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = `0 24px 56px ${p.color}22`; }}
+            onMouseOut={e  => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,.06)'; }}>
+
+            {/* Gradient header */}
+            <div style={{ background: p.gradient, padding: '28px 28px 24px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                <div style={{ background: 'rgba(255,255,255,.18)', border: '1.5px solid rgba(255,255,255,.28)', borderRadius: 8, padding: '6px 14px', fontFamily: 'Playfair Display,serif', fontWeight: 800, fontSize: '1.1rem', color: '#fff', letterSpacing: '.04em' }}>
+                  {p.id}
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold mb-2">Phone</h3>
-                  <p className="text-gray-400 text-lg">+91 87881 92982</p>
-                  <p className="text-gray-400 text-lg">+91 92099 47228</p>
-                  <p className="text-blue-300">Available Mon-Sat</p>
+                <div style={{ fontSize: '.75rem', fontWeight: 700, color: 'rgba(255,255,255,.75)', textTransform: 'uppercase', letterSpacing: '.08em' }}>
+                  {p.subtitle}
                 </div>
               </div>
+              <div style={{ fontFamily: 'Playfair Display,serif', fontSize: '1.5rem', fontWeight: 700, color: '#fff' }}>
+                {p.title}
+              </div>
+            </div>
 
-              <div className="flex items-start gap-6 group">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-yellow-400 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/30">
-                  <Mail className="text-white" size={28} />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold mb-2">Email</h3>
-                  <p className="text-gray-400 text-lg">afterschoolgoa@gmail.com</p>
-                </div>
+            {/* Body */}
+            <div style={{ padding: '24px 28px' }}>
+              <p style={{ color: '#475569', fontSize: '.9rem', lineHeight: 1.78, marginBottom: 22 }}>{p.desc}</p>
+
+              {/* Highlights */}
+              <div style={{ marginBottom: 22 }}>
+                {p.highlights.map((h, j) => (
+                  <div key={j} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 9 }}>
+                    <div style={{ width: 20, height: 20, borderRadius: '50%', background: p.light, border: `1.5px solid ${p.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <div style={{ width: 7, height: 7, borderRadius: '50%', background: p.color }} />
+                    </div>
+                    <span style={{ fontSize: '.86rem', color: '#334155', fontWeight: 500 }}>{h}</span>
+                  </div>
+                ))}
               </div>
 
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLSd_aFqtfqGMwL8eC-JOp6f0MkaDflytP-pWxCZ53AOy8dxS0w/viewform?usp=header" target="_blank" rel="noopener noreferrer" className="flex items-start gap-6 group bg-gradient-to-br from-blue-900/40 to-yellow-900/20 p-6 rounded-2xl border-2 border-blue-400/30 hover:border-yellow-400/60 transition-all transform hover:scale-105">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-yellow-400 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/30">
-                  <ExternalLink className="text-white" size={28} />
+              {/* Tags */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
+                {p.tags.map((t, j) => (
+                  <span key={j} style={{
+                    padding: '5px 13px', borderRadius: 6,
+                    background: p.light, border: `1px solid ${p.border}`,
+                    fontSize: '.75rem', fontWeight: 700, color: p.color,
+                  }}>{t}</span>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <a href="#contact" style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                marginTop: 22, padding: '12px', borderRadius: 8,
+                background: p.gradient, color: '#fff',
+                fontWeight: 700, fontSize: '.9rem', textDecoration: 'none',
+                transition: 'opacity .2s',
+              }}
+                onMouseOver={e => e.currentTarget.style.opacity = '.88'}
+                onMouseOut={e  => e.currentTarget.style.opacity = '1'}>
+                Enroll in {p.title} <ArrowRight size={16} />
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+
+  </div>
+</section>
+
+      {/* ══ TESTIMONIALS ══ */}
+      <section style={{ padding: '86px 5%', background: '#fff' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 56 }}>
+            <div className="badge" style={{ margin: '0 auto 16px' }}>Student Stories</div>
+            <div className="divider" style={{ margin: '0 auto 18px' }} />
+            <h2 className="section-title" style={{ textAlign: 'center' }}>What our students say</h2>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(285px,1fr))', gap: 20 }}>
+            {[
+              { name: 'Priya S.', grade: 'Class XII · NEET Aspirant', quote: 'AfterSchool completely changed how I approach Biology and Chemistry. The personal attention I received here made all the difference for my NEET prep.' },
+              { name: 'Rohan N.', grade: 'Class XI · JEE Aspirant', quote: 'Concepts are explained so clearly here. I used to fear Physics, but now it\'s my favourite subject! The teachers are always available and genuinely helpful.' },
+              { name: 'Sneha K.', grade: 'Class X · Board Exams', quote: 'I scored 94% in boards thanks to AfterSchool. The study materials, practice tests, and caring teachers made me feel so prepared and confident.' },
+            ].map((t, i) => (
+              <div key={i} className="testi-card">
+                <div style={{ fontSize: '1rem', marginBottom: 13, color: '#FFC107', letterSpacing: 3 }}>★★★★★</div>
+                <p style={{ color: '#4A7A9B', lineHeight: 1.78, fontSize: '0.92rem', marginBottom: 20, fontStyle: 'italic' }}>{t.quote}</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
+                  <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg,#29ABE2,#1a7fb0)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: '0.95rem' }}>{t.name[0]}</div>
+                  <div>
+                    <div style={{ fontWeight: 700, color: '#0A2A4A', fontSize: '0.9rem' }}>{t.name}</div>
+                    <div style={{ fontSize: '0.76rem', color: '#29ABE2', fontWeight: 600 }}>{t.grade}</div>
+                  </div>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══ FACULTY ══ */}
+     <section style={{ padding: '88px 5%', background: '#F8FAFC' }}>
+  <div style={{ maxWidth: 950, margin: '0 auto' }}>
+
+    <div style={{ marginBottom: 46, textAlign: 'center' }}>
+      <div className="section-line" style={{ margin: '0 auto 14px' }} />
+      <span className="section-label">Our Team</span>
+      <h2 className="serif" style={{ fontSize: 'clamp(1.8rem,3.5vw,2.5rem)', fontWeight: 700, color: '#0A2A4A' }}>
+        Learn from the Best
+      </h2>
+    </div>
+
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: 20 }}>
+      {[
+        { image: '/faculty/aamir.jpeg',    name: 'Mr. Aamir Jakati',        role: 'Founder & CEO',           qualification: 'B.Sc-B.Ed, M.Sc (Zoology)',     subjects: 'Chemistry & Biology', experience: '10+ Years' },
+        { image: '/faculty/ayesh.jpeg',    name: 'Mr. Ayesh Jamadar',       role: 'Head of Operations',      qualification: 'I.T Engineer',                  subjects: 'Technical Head',      experience: '5+ Years'  },
+        { image: '/faculty/siddhant.jpg', name: 'Mr. Siddhant Salgaonkar', role: 'Branch Head (Sanquelim)', qualification: 'B.Sc-B.Ed, M.Sc (Mathematics)', subjects: 'Chemistry & Maths',   experience: '6+ Years'  },
+        { image: '/faculty/aaisha.jpg',   name: 'Mrs. Aaisha Jakati',      role: 'Branch Head (Valpoi)',    qualification: 'B.Sc-B.Ed (Physics)',            subjects: 'Physics & Maths',     experience: '6+ Years'  },
+        { image: '/faculty/rukhsar.jpg',  name: 'Miss. Rukhsar Khan',      role: 'Senior Tutor',            qualification: 'B.A',                           subjects: 'English & Hindi',     experience: '4+ Years'  },
+        { image: '/faculty/faiza.jpg',    name: 'Miss. Faiza Khan',        role: 'Junior Tutor',            qualification: 'B.Sc (Physics)',                subjects: 'Science & Maths',     experience: '1+ Years'  },
+        { image: '/faculty/nuva.jpg',     name: 'Mr. Nuva Shaikh',         role: 'Junior Tutor',            qualification: 'B.Com',                         subjects: 'Social Sciences',     experience: '1+ Years'  },
+      ].map((f, i) => (
+        <div key={i}
+          style={{ background: '#fff', borderRadius: 12, padding: '32px 22px', textAlign: 'center', border: '1.5px solid #E2EBF4', transition: 'all .25s' }}
+          onMouseOver={e => { e.currentTarget.style.boxShadow = '0 12px 32px rgba(41,171,226,.12)'; e.currentTarget.style.borderColor = '#29ABE2'; e.currentTarget.style.transform = 'translateY(-5px)'; }}
+          onMouseOut={e  => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#E2EBF4'; e.currentTarget.style.transform = 'translateY(0)'; }}>
+
+          {/* Photo — initials fallback if image missing */}
+          <div style={{ width: 100, height: 100, borderRadius: '50%', margin: '0 auto 16px', overflow: 'hidden', border: '3px solid #E2EBF4', boxShadow: '0 8px 20px rgba(41,171,226,.20)', background: 'linear-gradient(135deg,#29ABE2,#1565A8)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <img
+              src={f.image}
+              alt={f.name}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              onError={e => {
+                e.target.style.display = 'none';
+                const initials = f.name.split(' ').slice(1, 3).map(n => n[0]).join('');
+                e.target.parentElement.innerHTML = `<span style="color:#fff;font-weight:800;font-size:1.3rem;font-family:'Playfair Display',serif">${initials}</span>`;
+              }}
+            />
+          </div>
+
+          {/* Name */}
+          <div style={{ fontFamily: 'Playfair Display,serif', fontSize: '1.05rem', fontWeight: 700, color: '#0A2A4A', marginBottom: 4 }}>
+            {f.name}
+          </div>
+
+          {/* Role */}
+          <div style={{ fontSize: '.75rem', fontWeight: 700, color: '#29ABE2', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '.06em' }}>
+            {f.role}
+          </div>
+
+          {/* Qualification */}
+          <div style={{ fontSize: '.85rem', color: '#64748B', marginBottom: 4 }}>
+            {f.qualification}
+          </div>
+
+          {/* Subjects */}
+          <div style={{ fontSize: '.85rem', color: '#64748B', marginBottom: 4 }}>
+            {f.subjects}
+          </div>
+
+          {/* Experience */}
+          <div style={{ fontSize: '.78rem', color: '#94A3B8', fontWeight: 600 }}>
+            {f.experience}
+          </div>
+
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+      {/* ══ APP ══ */}
+      <section id="app" style={{ padding: '86px 5%', background: '#fff' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <div style={{ background: 'linear-gradient(135deg,#F0F8FF,#E8F4FD)', borderRadius: 28, padding: '56px 44px', border: '2px solid #D6EEFA', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 56, alignItems: 'center' }} className="app-grid">
+            <div>
+              <div className="badge"><Smartphone size={13} />Learn Anywhere</div>
+              <h2 className="section-title" style={{ marginBottom: 13 }}>
+                Study smarter with the{' '}
+                <span style={{ color: '#29ABE2' }}>AfterSchool App</span>
+              </h2>
+              <p style={{ color: '#4A7A9B', lineHeight: 1.78, fontSize: '0.96rem', marginBottom: 26 }}>
+                Access notes, assignments, announcements, and resources right from your phone. Stay connected beyond the classroom.
+              </p>
+              <ul style={{ listStyle: 'none', marginBottom: 32 }}>
+                {['Study materials & lecture notes', 'Important announcements & updates', 'Easy communication with teachers', 'Built for Classes IX–XII, NEET & JEE'].map((item, i) => (
+                  <li key={i} style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 10, color: '#0A2A4A', fontSize: '0.91rem', fontWeight: 600 }}>
+                    <CheckCircle size={17} color="#29ABE2" strokeWidth={2.5} />{item}
+                  </li>
+                ))}
+              </ul>
+              <a href="https://play.google.com/store/apps/details?id=co.marshal.lwakl" target="_blank" rel="noopener noreferrer" className="btn-blue">
+                <Play size={17} />Download on Play Store
+              </a>
+            </div>
+            <div className="app-right" style={{ display: 'flex', justifyContent: 'center' }}>
+              <div className="float" style={{ position: 'relative' }}>
+                <div style={{ width: 230, height: 440, background: '#0A2A4A', borderRadius: 34, border: '4px solid #29ABE2', boxShadow: '0 32px 76px rgba(41,171,226,0.22), 0 0 0 8px rgba(41,171,226,0.07)', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ height: 26, background: '#071B33', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <div style={{ width: 60, height: 4, background: '#29ABE2', borderRadius: 2, opacity: 0.4 }} />
+                  </div>
+                  <img src="/app-screenshot.png" alt="App" style={{ flex: 1, width: '100%', objectFit: 'cover' }}
+                    onError={e => { e.target.style.display='none'; e.target.parentElement.style.cssText += 'align-items:center;justify-content:center;'; e.target.insertAdjacentHTML('afterend', '<div style="text-align:center;padding:28px;color:#fff"><div style="font-size:3rem;margin-bottom:10px">📱</div><div style="font-weight:700;font-size:0.9rem">AfterSchool App</div></div>'); }} />
+                </div>
+                <div className="float-3" style={{ position: 'absolute', top: -14, right: -22, background: '#FFC107', color: '#0A2A4A', borderRadius: 13, padding: '7px 13px', fontWeight: 800, fontSize: '0.78rem', boxShadow: '0 6px 16px rgba(255,193,7,0.35)' }}>
+                  ✅ Free Download
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══ CTA BANNER ══ */}
+      <section style={{ padding: '52px 5%', background: '#F0F8FF' }}>
+        <div style={{ maxWidth: 820, margin: '0 auto' }}>
+          <div className="enroll-banner">
+            <div style={{ position: 'relative', zIndex: 2 }}>
+              <div style={{ fontSize: '2.2rem', marginBottom: 12 }}>🚀</div>
+              <h2 style={{ fontFamily: 'Playfair Display,serif', fontSize: 'clamp(1.7rem,3.2vw,2.3rem)', fontWeight: 700, color: '#fff', marginBottom: 12 }}>
+                Ready to unlock your potential?
+              </h2>
+              <p style={{ color: '#A8D8F0', fontSize: '0.97rem', marginBottom: 30, maxWidth: 400, margin: '0 auto 30px' }}>
+                Join 1000+ students already learning smarter at AfterSchool Goa.
+              </p>
+              <div style={{ display: 'flex', gap: 13, justifyContent: 'center', flexWrap: 'wrap' }}>
+                <a href="#contact" className="btn-blue" style={{ background: '#FFC107', color: '#0A2A4A', boxShadow: '0 8px 22px rgba(255,193,7,0.40)' }}>Enroll Today →</a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSd_aFqtfqGMwL8eC-JOp6f0MkaDflytP-pWxCZ53AOy8dxS0w/viewform?usp=header" target="_blank" rel="noopener noreferrer" className="btn-outline" style={{ borderColor: 'rgba(255,255,255,0.35)', color: '#fff' }}>
+                  📋 Enquiry Form
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══ CONTACT ══ */}
+      <section id="contact" style={{ padding: '86px 5%', background: '#fff' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 56 }}>
+            <div className="badge" style={{ margin: '0 auto 16px' }}>Get In Touch</div>
+            <div className="divider" style={{ margin: '0 auto 18px' }} />
+            <h2 className="section-title" style={{ textAlign: 'center' }}>We'd love to hear from you</h2>
+            <p style={{ color: '#4A7A9B', fontSize: '0.98rem', textAlign: 'center' }}>Visit us, call us, or fill out our enquiry form — always here to help!</p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: 32, alignItems: 'start' }} className="contact-grid">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {[
+                { emoji: '📍', label: 'Location', lines: ['Valpoi, Goa 403506', 'India'] },
+                { emoji: '📞', label: 'Phone', lines: ['+91 87881 92982', '+91 92099 47228', 'Mon – Sat'] },
+                { emoji: '✉️', label: 'Email', lines: ['afterschoolgoa@gmail.com'] },
+              ].map((c, i) => (
+                <div key={i} className="contact-row">
+                  <div style={{ width: 46, height: 46, borderRadius: 13, background: 'rgba(41,171,226,0.09)', border: '1.5px solid rgba(41,171,226,0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', flexShrink: 0 }}>{c.emoji}</div>
+                  <div>
+                    <div style={{ fontWeight: 700, color: '#0A2A4A', fontSize: '0.88rem', marginBottom: 3 }}>{c.label}</div>
+                    {c.lines.map((l, j) => <div key={j} style={{ color: '#4A7A9B', fontSize: '0.86rem' }}>{l}</div>)}
+                  </div>
+                </div>
+              ))}
+              <a href="https://docs.google.com/forms/d/e/1FAIpQLSd_aFqtfqGMwL8eC-JOp6f0MkaDflytP-pWxCZ53AOy8dxS0w/viewform?usp=header" target="_blank" rel="noopener noreferrer"
+                className="contact-row" style={{ background: 'linear-gradient(135deg,#29ABE2,#1a7fb0)', borderColor: '#29ABE2', cursor: 'pointer' }}>
+                <div style={{ width: 46, height: 46, borderRadius: 13, background: 'rgba(255,255,255,0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', flexShrink: 0 }}>📋</div>
                 <div>
-                  <h3 className="text-2xl font-bold mb-2 flex items-center gap-2">
-                    Enquiry Form
-                    <ExternalLink size={20} className="text-yellow-400" />
-                  </h3>
-                  <p className="text-gray-400 text-lg">Fill our online enquiry form</p>
-                  <p className="text-yellow-300 font-semibold">Click to open form →</p>
+                  <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.88rem', marginBottom: 2, display: 'flex', alignItems: 'center', gap: 5 }}>Enquiry Form <ExternalLink size={12} /></div>
+                  <div style={{ color: 'rgba(255,255,255,0.72)', fontSize: '0.82rem' }}>Click to fill our online form →</div>
                 </div>
               </a>
             </div>
 
-            {/* Google Maps */}
-            <div className="h-full min-h-[500px]">
-              <div className="bg-slate-900/50 backdrop-blur-sm p-4 rounded-3xl border-2 border-blue-500/30 hover:border-blue-400/50 transition-all h-full shadow-xl">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3844.0167922323303!2d74.137749!3d15.5372305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbfa1491a81bd9d%3A0xba642ce796da10fa!2sJakati's%20After-School%20Coaching%20Classes%20Valpoi!5e0!3m2!1sen!2sin!4v1769179938168!5m2!1sen!2sin"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0, borderRadius: '1rem', minHeight: '450px' }}
-                  allowFullScreen={true}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  className="rounded-2xl"
-                ></iframe>
-              </div>
+            <div style={{ background: '#F0F8FF', borderRadius: 22, padding: 10, border: '1.5px solid #D6EEFA', boxShadow: '0 4px 18px rgba(41,171,226,0.07)' }}>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3844.0167922323303!2d74.137749!3d15.5372305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbfa1491a81bd9d%3A0xba642ce796da10fa!2sJakati's%20After-School%20Coaching%20Classes%20Valpoi!5e0!3m2!1sen!2sin!4v1769179938168!5m2!1sen!2sin"
+                width="100%" height="440"
+                style={{ border: 0, borderRadius: 14, display: 'block' }}
+                allowFullScreen loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
           </div>
         </div>
       </section>
 
-
-      {/* Footer */}
-      <footer className="bg-slate-950/80 border-t border-blue-500/20 py-8 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="text-2xl font-black bg-gradient-to-r from-blue-400 via-yellow-400 to-blue-400 bg-clip-text text-transparent mb-2">AFTER-SCHOOL COACHING CLASSES</div>
-          <p className="text-gray-400">© 2026 After-School Goa. All rights reserved.</p>
-          <p className="text-blue-300 mt-2 font-semibold">ESTD: 2020 • IX, X, XI, XII</p>
-          <p className="text-gray-400">Made with love by @inovex_solutions</p>
+      {/* ══ FOOTER ══ */}
+      <footer style={{ background: '#0A2A4A', color: '#A8D8F0', padding: '44px 5% 28px', textAlign: 'center' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 11, marginBottom: 10 }}>
+            <img src="LOGO-removebg-preview (1).png" alt="Logo" style={{ height: 38, width: 38, objectFit: 'contain', filter: 'brightness(0) invert(1)' }} onError={e => e.target.style.display='none'} />
+            <div style={{ fontFamily: 'Playfair Display,serif', fontSize: '1.25rem', fontWeight: 700, color: '#fff' }}>After-School Coaching Classes</div>
+          </div>
+          <p style={{ color: '#29ABE2', fontWeight: 700, fontSize: '0.79rem', marginBottom: 14, letterSpacing: '0.07em' }}>ESTD: 2022 · VALPOI, GOA · IX · X · XI · XII · NEET · JEE</p>
+          <div style={{ height: 1, background: 'rgba(41,171,226,0.18)', maxWidth: 360, margin: '0 auto 14px' }} />
+          <p style={{ fontSize: '0.8rem', color: '#4A7A9B' }}>© 2026 AfterSchool Goa. All rights reserved.</p>
+          <p style={{ fontSize: '0.76rem', color: '#2D5A7A', marginTop: 5 }}>Made with ❤️ by @inovex_solutions</p>
         </div>
       </footer>
+
     </div>
   );
 }
