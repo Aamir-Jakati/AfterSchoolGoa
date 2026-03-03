@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "After School Coaching Classes in Goa | IX–XII, NEET & JEE",
+  title: "After School Coaching Classes in Goa | 6th–12th, NEET, JEE, GSSC, GPSC, GTET, CTET",
   description:
     "After School Goa offers expert after-school coaching for Classes IX–XII, NEET & JEE in Valpoi, Goa. Personalized attention, proven results, and holistic learning.",
   keywords: [
