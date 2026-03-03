@@ -13,19 +13,33 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "After School Coaching Classes in Goa | 6th–12th, NEET, JEE, GSSC, GPSC, GTET, CTET",
+  title: "After School Coaching Classes in Goa | 6th–12th, NEET, JEE, GSSC, GPSC, GTET & CTET",
   description:
-    "After School Goa offers expert after-school coaching for Classes IX–XII, NEET & JEE in Valpoi, Goa. Personalized attention, proven results, and holistic learning.",
+    "After School Goa offers expert after-school coaching for Classes 6th–12th, NEET, JEE, GSSC, GPSC, GTET & CTET in Valpoi and Sanquelim, Goa. Personalized attention, proven results, and holistic learning.",
   keywords: [
     "after school coaching Goa",
     "coaching classes in Goa",
     "NEET coaching Goa",
     "JEE coaching Goa",
+    "GSSC coaching Goa",
+    "CTET coaching Goa",
+    "GTET coaching Goa",
+    "GPSC coaching Goa",
+    "Class 6 tuition Goa",
+    "Class 7 tuition Goa",
+    "Class 8 tuition Goa",
     "Class 9 tuition Goa",
     "Class 10 tuition Goa",
     "Class 11 coaching Goa",
     "Class 12 coaching Goa",
     "Valpoi coaching classes",
+    "Online Coaching Classes",
+    "Online Coaching Classes Goa",
+    "Online Coaching Classes Goa",
+    "Online tuition classes goa",
+    "Online tution classes goa",
+    "Aamir Jakati",
+    "Aamironic",
   ],
    verification: {
     google: "8psYbZUmxZpmJmw-Skm1_7sgjUL0QhbxHSTT6ExBOBg",
