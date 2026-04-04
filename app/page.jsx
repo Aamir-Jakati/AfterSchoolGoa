@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Menu, X, ExternalLink, CheckCircle, Play, Smartphone, ArrowRight } from 'lucide-react';
+import { Menu, X, ExternalLink, CheckCircle, Play, Smartphone, ArrowRight, Lightbulb, Stethoscope, Settings, GraduationCap, MapPin, BookOpen, BrainCircuit, Target, Handshake, Heart, Zap, Star, Rocket, FileText, Phone, Mail } from 'lucide-react';
 
 /* ─────────────────────────────────────────────
    BRAND TOKENS  (extracted from logo)
@@ -353,7 +353,7 @@ export default function AfterSchoolGoa() {
               Expert coaching for Classes IX–XII, NEET & JEE in Goa. We blend academic excellence with life skills, confidence, and critical thinking.
             </p>
             <div className="fade-up d3" style={{ display: 'flex', gap: 13, flexWrap: 'wrap', marginBottom: 48 }}>
-              <a href="#contact" className="btn-blue">Enroll Now 🚀</a>
+              <a href="#contact" className="btn-blue">Enroll Now <Rocket size={16} /></a>
               <a href="#programs" className="btn-outline">Explore Courses</a>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12 }}>
@@ -368,17 +368,17 @@ export default function AfterSchoolGoa() {
 
           {/* RIGHT */}
           <div className="hero-right" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', height: 450 }}>
-            <div className="float" style={{ width: 270, height: 270, borderRadius: '50%', background: 'linear-gradient(135deg, #29ABE2 0%, #1a7fb0 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 32px 80px rgba(41,171,226,0.28)', fontSize: '7rem' }}>
-              💡
+            <div className="float" style={{ width: 270, height: 270, borderRadius: '50%', background: 'linear-gradient(135deg, #29ABE2 0%, #1a7fb0 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 32px 80px rgba(41,171,226,0.28)' }}>
+              <Lightbulb size={120} color="#fff" strokeWidth={1.5} />
             </div>
             {[
-              { cls: 'float-2', top: '6%', right: '2%', bg: '#fff', color: '#0A2A4A', border: '2px solid #D6EEFA', shadow: '0 8px 24px rgba(41,171,226,0.16)', text: '🩺 NEET Coaching' },
-              { cls: 'float-3', bottom: '16%', left: '0%', bg: '#fff', color: '#0A2A4A', border: '2px solid #D6EEFA', shadow: '0 8px 24px rgba(41,171,226,0.16)', text: '⚙️ JEE Coaching' },
-              { cls: 'float', top: '40%', right: '-6%', bg: 'linear-gradient(135deg,#FFC107,#F7941D)', color: '#fff', border: 'none', shadow: '0 8px 24px rgba(247,148,29,0.30)', text: '🎓 Class IX–XII' },
-              { cls: '', bottom: '4%', right: '8%', bg: '#0A2A4A', color: '#fff', border: 'none', shadow: '0 8px 24px rgba(10,42,74,0.22)', text: '📍 Valpoi, Goa' },
+              { cls: 'float-2', top: '6%', right: '2%', bg: '#fff', color: '#0A2A4A', border: '2px solid #D6EEFA', shadow: '0 8px 24px rgba(41,171,226,0.16)', icon: <Stethoscope size={16} />, text: 'NEET Coaching' },
+              { cls: 'float-3', bottom: '16%', left: '0%', bg: '#fff', color: '#0A2A4A', border: '2px solid #D6EEFA', shadow: '0 8px 24px rgba(41,171,226,0.16)', icon: <Settings size={16} />, text: 'JEE Coaching' },
+              { cls: 'float', top: '40%', right: '-6%', bg: 'linear-gradient(135deg,#FFC107,#F7941D)', color: '#fff', border: 'none', shadow: '0 8px 24px rgba(247,148,29,0.30)', icon: <GraduationCap size={16} />, text: 'Class IX–XII' },
+              { cls: '', bottom: '4%', right: '8%', bg: '#0A2A4A', color: '#fff', border: 'none', shadow: '0 8px 24px rgba(10,42,74,0.22)', icon: <MapPin size={16} />, text: 'Valpoi, Goa' },
             ].map((b, i) => (
-              <div key={i} className={b.cls} style={{ position: 'absolute', top: b.top, right: b.right, bottom: b.bottom, left: b.left, background: b.bg, color: b.color, border: b.border, borderRadius: 16, padding: '12px 16px', boxShadow: b.shadow, fontWeight: 700, fontSize: '0.86rem', whiteSpace: 'nowrap' }}>
-                {b.text}
+              <div key={i} className={b.cls} style={{ position: 'absolute', top: b.top, right: b.right, bottom: b.bottom, left: b.left, background: b.bg, color: b.color, border: b.border, borderRadius: 16, padding: '12px 16px', boxShadow: b.shadow, fontWeight: 700, fontSize: '0.86rem', whiteSpace: 'nowrap', display: 'flex', alignItems: 'center', gap: 6 }}>
+                {b.icon} {b.text}
               </div>
             ))}
           </div>
@@ -396,15 +396,15 @@ export default function AfterSchoolGoa() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(285px,1fr))', gap: 20 }}>
             {[
-              { emoji: '📖', title: 'Academic Excellence', desc: 'Comprehensive coaching for CBSE, Goa Board, NEET & JEE with expert guidance in Physics, Chemistry, Biology, and Maths.', accent: '#29ABE2' },
-              { emoji: '🧠', title: 'Critical Thinking', desc: 'We develop problem-solving and analytical abilities for board exams, competitive tests, and real-world challenges.', accent: '#FFC107' },
-              { emoji: '🎯', title: 'Leadership & Confidence', desc: 'Building self-confidence, communication, and interpersonal skills that last a lifetime — not just until exam day.', accent: '#F7941D' },
-              { emoji: '🤝', title: 'Life Skills', desc: 'Practical skill development in time management, self-discipline, and personal growth that every student needs.', accent: '#29ABE2' },
-              { emoji: '💛', title: 'Personal Attention', desc: 'Individual focus on every student. We genuinely care about your progress and help unlock your full potential.', accent: '#FFC107' },
-              { emoji: '⚡', title: 'Proven Results', desc: 'A strong track record of students who cracked NEET, JEE, and board exams with flying colours since 2022.', accent: '#F7941D' },
+              { icon: <BookOpen size={24} color="#29ABE2" />, title: 'Academic Excellence', desc: 'Comprehensive coaching for CBSE, Goa Board, NEET & JEE with expert guidance in Physics, Chemistry, Biology, and Maths.', accent: '#29ABE2' },
+              { icon: <BrainCircuit size={24} color="#FFC107" />, title: 'Critical Thinking', desc: 'We develop problem-solving and analytical abilities for board exams, competitive tests, and real-world challenges.', accent: '#FFC107' },
+              { icon: <Target size={24} color="#F7941D" />, title: 'Leadership & Confidence', desc: 'Building self-confidence, communication, and interpersonal skills that last a lifetime — not just until exam day.', accent: '#F7941D' },
+              { icon: <Handshake size={24} color="#29ABE2" />, title: 'Life Skills', desc: 'Practical skill development in time management, self-discipline, and personal growth that every student needs.', accent: '#29ABE2' },
+              { icon: <Heart size={24} color="#FFC107" />, title: 'Personal Attention', desc: 'Individual focus on every student. We genuinely care about your progress and help unlock your full potential.', accent: '#FFC107' },
+              { icon: <Zap size={24} color="#F7941D" />, title: 'Proven Results', desc: 'A strong track record of students who cracked NEET, JEE, and board exams with flying colours since 2022.', accent: '#F7941D' },
             ].map((item, i) => (
               <div key={i} className="card">
-                <div className="icon-box" style={{ background: `${item.accent}14`, border: `1.5px solid ${item.accent}28` }}>{item.emoji}</div>
+                <div className="icon-box" style={{ background: `${item.accent}14`, border: `1.5px solid ${item.accent}28` }}>{item.icon}</div>
                 <h3 style={{ fontFamily: 'Playfair Display,serif', fontSize: '1.08rem', fontWeight: 700, color: '#0A2A4A', marginBottom: 9 }}>{item.title}</h3>
                 <p style={{ color: '#4A7A9B', lineHeight: 1.72, fontSize: '0.91rem' }}>{item.desc}</p>
               </div>
@@ -617,7 +617,7 @@ export default function AfterSchoolGoa() {
               { name: 'Sneha K.', grade: 'Class X · Board Exams', quote: 'I scored 94% in boards thanks to AfterSchool. The study materials, practice tests, and caring teachers made me feel so prepared and confident.' },
             ].map((t, i) => (
               <div key={i} className="testi-card">
-                <div style={{ fontSize: '1rem', marginBottom: 13, color: '#FFC107', letterSpacing: 3 }}>★★★★★</div>
+                <div style={{ display: 'flex', gap: 2, marginBottom: 13 }}>{[1,2,3,4,5].map(s => <Star key={s} fill="#FFC107" color="#FFC107" size={16} />)}</div>
                 <p style={{ color: '#4A7A9B', lineHeight: 1.78, fontSize: '0.92rem', marginBottom: 20, fontStyle: 'italic' }}>{t.quote}</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
                   <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg,#29ABE2,#1a7fb0)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: '0.95rem' }}>{t.name[0]}</div>
@@ -736,10 +736,10 @@ export default function AfterSchoolGoa() {
                     <div style={{ width: 60, height: 4, background: '#29ABE2', borderRadius: 2, opacity: 0.4 }} />
                   </div>
                   <img src="/app-screenshot.png" alt="App" style={{ flex: 1, width: '100%', objectFit: 'cover' }}
-                    onError={e => { e.target.style.display='none'; e.target.parentElement.style.cssText += 'align-items:center;justify-content:center;'; e.target.insertAdjacentHTML('afterend', '<div style="text-align:center;padding:28px;color:#fff"><div style="font-size:3rem;margin-bottom:10px">📱</div><div style="font-weight:700;font-size:0.9rem">AfterSchool App</div></div>'); }} />
+                    onError={e => { e.target.style.display='none'; e.target.parentElement.style.cssText += 'align-items:center;justify-content:center;'; e.target.insertAdjacentHTML('afterend', '<div style="text-align:center;padding:28px;color:#fff"><div style="display:flex;justify-content:center;margin-bottom:10px"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></div><div style="font-weight:700;font-size:0.9rem">AfterSchool App</div></div>'); }} />
                 </div>
-                <div className="float-3" style={{ position: 'absolute', top: -14, right: -22, background: '#FFC107', color: '#0A2A4A', borderRadius: 13, padding: '7px 13px', fontWeight: 800, fontSize: '0.78rem', boxShadow: '0 6px 16px rgba(255,193,7,0.35)' }}>
-                  ✅ Free Download
+                <div className="float-3" style={{ position: 'absolute', top: -14, right: -22, background: '#FFC107', color: '#0A2A4A', borderRadius: 13, padding: '7px 13px', fontWeight: 800, fontSize: '0.78rem', boxShadow: '0 6px 16px rgba(255,193,7,0.35)', display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <CheckCircle size={14} /> Free Download
                 </div>
               </div>
             </div>
@@ -752,7 +752,7 @@ export default function AfterSchoolGoa() {
         <div style={{ maxWidth: 820, margin: '0 auto' }}>
           <div className="enroll-banner">
             <div style={{ position: 'relative', zIndex: 2 }}>
-              <div style={{ fontSize: '2.2rem', marginBottom: 12 }}>🚀</div>
+              <div style={{ marginBottom: 16 }}><Rocket size={40} color="#fff" strokeWidth={1.5} /></div>
               <h2 style={{ fontFamily: 'Playfair Display,serif', fontSize: 'clamp(1.7rem,3.2vw,2.3rem)', fontWeight: 700, color: '#fff', marginBottom: 12 }}>
                 Ready to unlock your potential?
               </h2>
@@ -762,7 +762,7 @@ export default function AfterSchoolGoa() {
               <div style={{ display: 'flex', gap: 13, justifyContent: 'center', flexWrap: 'wrap' }}>
                 <a href="#contact" className="btn-blue" style={{ background: '#FFC107', color: '#0A2A4A', boxShadow: '0 8px 22px rgba(255,193,7,0.40)' }}>Enroll Today →</a>
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSd_aFqtfqGMwL8eC-JOp6f0MkaDflytP-pWxCZ53AOy8dxS0w/viewform?usp=header" target="_blank" rel="noopener noreferrer" className="btn-outline" style={{ borderColor: 'rgba(255,255,255,0.35)', color: '#fff' }}>
-                  📋 Enquiry Form
+                  <FileText size={18} /> Enquiry Form
                 </a>
               </div>
             </div>
@@ -783,12 +783,12 @@ export default function AfterSchoolGoa() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: 32, alignItems: 'start' }} className="contact-grid">
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {[
-                { emoji: '📍', label: 'Location', lines: ['Valpoi, Goa 403506', 'India'] },
-                { emoji: '📞', label: 'Phone', lines: ['+91 87881 92982', '+91 92099 47228', 'Mon – Sat'] },
-                { emoji: '✉️', label: 'Email', lines: ['afterschoolgoa@gmail.com'] },
+                { icon: <MapPin size={22} color="#29ABE2" />, label: 'Location', lines: ['Valpoi, Goa 403506', 'India'] },
+                { icon: <Phone size={22} color="#29ABE2" />, label: 'Phone', lines: ['+91 87881 92982', '+91 92099 47228', 'Mon – Sat'] },
+                { icon: <Mail size={22} color="#29ABE2" />, label: 'Email', lines: ['afterschoolgoa@gmail.com'] },
               ].map((c, i) => (
                 <div key={i} className="contact-row">
-                  <div style={{ width: 46, height: 46, borderRadius: 13, background: 'rgba(41,171,226,0.09)', border: '1.5px solid rgba(41,171,226,0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', flexShrink: 0 }}>{c.emoji}</div>
+                  <div style={{ width: 46, height: 46, borderRadius: 13, background: 'rgba(41,171,226,0.09)', border: '1.5px solid rgba(41,171,226,0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{c.icon}</div>
                   <div>
                     <div style={{ fontWeight: 700, color: '#0A2A4A', fontSize: '0.88rem', marginBottom: 3 }}>{c.label}</div>
                     {c.lines.map((l, j) => <div key={j} style={{ color: '#4A7A9B', fontSize: '0.86rem' }}>{l}</div>)}
@@ -797,7 +797,7 @@ export default function AfterSchoolGoa() {
               ))}
               <a href="https://docs.google.com/forms/d/e/1FAIpQLSd_aFqtfqGMwL8eC-JOp6f0MkaDflytP-pWxCZ53AOy8dxS0w/viewform?usp=header" target="_blank" rel="noopener noreferrer"
                 className="contact-row" style={{ background: 'linear-gradient(135deg,#29ABE2,#1a7fb0)', borderColor: '#29ABE2', cursor: 'pointer' }}>
-                <div style={{ width: 46, height: 46, borderRadius: 13, background: 'rgba(255,255,255,0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.25rem', flexShrink: 0 }}>📋</div>
+                <div style={{ width: 46, height: 46, borderRadius: 13, background: 'rgba(255,255,255,0.18)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}><FileText size={22} color="#fff" /></div>
                 <div>
                   <div style={{ fontWeight: 700, color: '#fff', fontSize: '0.88rem', marginBottom: 2, display: 'flex', alignItems: 'center', gap: 5 }}>Enquiry Form <ExternalLink size={12} /></div>
                   <div style={{ color: 'rgba(255,255,255,0.72)', fontSize: '0.82rem' }}>Click to fill our online form →</div>
@@ -828,7 +828,7 @@ export default function AfterSchoolGoa() {
           <p style={{ color: '#29ABE2', fontWeight: 700, fontSize: '0.79rem', marginBottom: 14, letterSpacing: '0.07em' }}>ESTD: 2022 · VALPOI, GOA · IX · X · XI · XII · NEET · JEE</p>
           <div style={{ height: 1, background: 'rgba(41,171,226,0.18)', maxWidth: 360, margin: '0 auto 14px' }} />
           <p style={{ fontSize: '0.8rem', color: '#4A7A9B' }}>© 2026 AfterSchool Goa. All rights reserved.</p>
-          <p style={{ fontSize: '0.76rem', color: '#2D5A7A', marginTop: 5 }}>Made with ❤️ by @inovex_solutions</p>
+          <p style={{ fontSize: '0.76rem', color: '#2D5A7A', marginTop: 5, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}>Made with <Heart size={12} color="#EF4444" fill="#EF4444" /> by @inovex_solutions</p>
         </div>
       </footer>
 
