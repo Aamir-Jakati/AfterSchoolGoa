@@ -25,11 +25,23 @@ export default function AfterSchoolGoa() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  /* Subtle geometric floating shapes — replaces particle canvas */
+  /* Premium Interactive Constellation Canvas */
   useEffect(() => {
     const canvas = heroRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    
+    let mouse = { x: null, y: null };
+    const onMouseMove = (e) => { 
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left; 
+      mouse.y = e.clientY - rect.top; 
+    };
+    const onMouseLeave = () => { mouse.x = null; mouse.y = null; };
+    
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseleave', onMouseLeave);
+
     const resize = () => {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
@@ -37,52 +49,68 @@ export default function AfterSchoolGoa() {
     resize();
     window.addEventListener('resize', resize);
 
-    const shapes = Array.from({ length: 20 }, (_, i) => ({
+    const particles = Array.from({ length: 60 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      r: 24 + Math.random() * 72,
-      vx: (Math.random() - 0.5) * 0.28,
-      vy: (Math.random() - 0.5) * 0.28,
-      type: i % 3,
-      alpha: 0.03 + Math.random() * 0.06,
+      r: Math.random() * 2 + 1,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
     }));
 
     let raf;
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      shapes.forEach(s => {
-        s.x += s.vx; s.y += s.vy;
-        if (s.x < -s.r) s.x = canvas.width + s.r;
-        if (s.x > canvas.width + s.r) s.x = -s.r;
-        if (s.y < -s.r) s.y = canvas.height + s.r;
-        if (s.y > canvas.height + s.r) s.y = -s.r;
-
-        ctx.save();
-        ctx.globalAlpha = s.alpha;
-        ctx.strokeStyle = '#29ABE2';
-        ctx.fillStyle = '#29ABE2';
-        ctx.lineWidth = 1.5;
-
-        if (s.type === 0) {
-          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill();
-        } else if (s.type === 1) {
-          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.stroke();
-        } else {
-          ctx.beginPath();
-          for (let i = 0; i < 6; i++) {
-            const a = (Math.PI / 3) * i - Math.PI / 6;
-            i === 0
-              ? ctx.moveTo(s.x + s.r * Math.cos(a), s.y + s.r * Math.sin(a))
-              : ctx.lineTo(s.x + s.r * Math.cos(a), s.y + s.r * Math.sin(a));
+      
+      for (let i = 0; i < particles.length; i++) {
+        let p = particles[i];
+        
+        // Mouse repulsion
+        if (mouse.x !== null) {
+          const dx = p.x - mouse.x;
+          const dy = p.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            p.x += dx * 0.05;
+            p.y += dy * 0.05;
           }
-          ctx.closePath(); ctx.stroke();
         }
-        ctx.restore();
-      });
+        
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = '#29ABE2';
+        ctx.globalAlpha = 0.4;
+        ctx.fill();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          let p2 = particles[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = '#29ABE2';
+            ctx.globalAlpha = 1 - dist / 100;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+      ctx.globalAlpha = 1;
       raf = requestAnimationFrame(draw);
     };
     draw();
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); };
+    return () => { 
+      cancelAnimationFrame(raf); 
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseleave', onMouseLeave);
+    };
   }, []);
 
   const navLinks = [
@@ -139,12 +167,17 @@ export default function AfterSchoolGoa() {
         .btn-outline:hover { background: #29ABE2; color: #fff; transform: translateY(-2px); }
 
         .card {
-          background: #fff; border-radius: 20px; padding: 28px;
-          border: 1.5px solid #D6EEFA;
-          transition: all 0.3s ease;
-          box-shadow: 0 2px 12px rgba(41,171,226,0.06);
+          background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+          border-radius: 20px; padding: 28px;
+          border: 1px solid rgba(214, 238, 250, 0.8);
+          transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
+          box-shadow: 0 4px 16px rgba(41,171,226,0.04);
         }
-        .card:hover { transform: translateY(-6px); box-shadow: 0 18px 44px rgba(41,171,226,0.14); border-color: #29ABE2; }
+        .card:hover { 
+          transform: translateY(-8px) scale(1.02); 
+          box-shadow: 0 22px 48px rgba(41,171,226,0.18), 0 0 0 2px rgba(41,171,226,0.15); 
+          border-color: #29ABE2; 
+        }
 
         .badge {
           display: inline-flex; align-items: center; gap: 6px;
@@ -419,9 +452,6 @@ export default function AfterSchoolGoa() {
     {activeTab === 'classes' && (
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20 }}>
         {[
-          { roman: 'VI',   title: 'Class VI',   label: 'Foundation', color: '#29ABE2', light: '#EFF9FF', tags: ['Goa Board', 'NCERT', 'CBSE', 'NEP'],              desc: 'Build a solid academic base with core subjects — the first step toward a brilliant future.' },
-          { roman: 'VII',  title: 'Class VII',  label: 'Foundation', color: '#29ABE2', light: '#EFF9FF', tags: ['Goa Board', 'NCERT', 'CBSE', 'NEP'],              desc: 'Strengthen foundational knowledge with engaging, concept-first teaching across all subjects.' },
-          { roman: 'VIII', title: 'Class VIII', label: 'Foundation', color: '#29ABE2', light: '#EFF9FF', tags: ['Goa Board', 'NCERT', 'CBSE', 'NEP'],              desc: 'Prepare for secondary education with comprehensive coverage and strong fundamentals.' },
           { roman: 'IX',   title: 'Class IX',   label: 'Secondary',  color: '#1565A8', light: '#EFF4FF', tags: ['Goa Board', 'NCERT', 'CBSE', 'NEP'],              desc: 'Begin secondary-level learning with structured subject coaching and exam readiness.' },
           { roman: 'X',    title: 'Class X',    label: 'Board Prep', color: '#0A2A4A', light: '#EEF2FF', tags: ['Goa Board', 'CBSE', 'NEP'],                       desc: 'Focused board exam preparation with mock tests, full coverage, and personalised attention.' },
           { roman: 'XI',   title: 'Class XI',   label: 'Senior',     color: '#7C3AED', light: '#F5F3FF', tags: ['Physics', 'Chemistry', 'Biology', 'Maths'],        desc: 'Transition to senior secondary with stream specialisation and competitive exam groundwork.' },
