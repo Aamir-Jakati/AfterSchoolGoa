@@ -30,15 +30,15 @@ export default function AfterSchoolGoa() {
     const canvas = heroRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    
+
     let mouse = { x: null, y: null };
-    const onMouseMove = (e) => { 
+    const onMouseMove = (e) => {
       const rect = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - rect.left; 
-      mouse.y = e.clientY - rect.top; 
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
     };
     const onMouseLeave = () => { mouse.x = null; mouse.y = null; };
-    
+
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseleave', onMouseLeave);
 
@@ -60,10 +60,10 @@ export default function AfterSchoolGoa() {
     let raf;
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       for (let i = 0; i < particles.length; i++) {
         let p = particles[i];
-        
+
         // Mouse repulsion
         if (mouse.x !== null) {
           const dx = p.x - mouse.x;
@@ -74,7 +74,7 @@ export default function AfterSchoolGoa() {
             p.y += dy * 0.05;
           }
         }
-        
+
         p.x += p.vx; p.y += p.vy;
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
@@ -105,8 +105,8 @@ export default function AfterSchoolGoa() {
       raf = requestAnimationFrame(draw);
     };
     draw();
-    return () => { 
-      cancelAnimationFrame(raf); 
+    return () => {
+      cancelAnimationFrame(raf);
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseleave', onMouseLeave);
@@ -302,7 +302,7 @@ export default function AfterSchoolGoa() {
       }}>
         <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 70 }}>
           <a href="#home" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-            <img src="LOGO-removebg-preview (1).png" alt="Logo" style={{ height: 44, width: 44, objectFit: 'contain' }} onError={e => e.target.style.display='none'} />
+            <img src="LOGO-removebg-preview (1).png" alt="Logo" style={{ height: 44, width: 44, objectFit: 'contain' }} onError={e => e.target.style.display = 'none'} />
             <div>
               <div style={{ fontFamily: 'Playfair Display,serif', fontSize: '1.1rem', fontWeight: 700, color: '#0A2A4A', lineHeight: 1.1 }}>After-School</div>
               <div style={{ fontSize: '0.62rem', fontWeight: 700, color: '#29ABE2', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Coaching Classes · Goa</div>
@@ -415,193 +415,193 @@ export default function AfterSchoolGoa() {
       </section>
 
       {/* ══ COURSES ══ */}
-<section id="programs" style={{ padding: '88px 5%', background: '#fff' }}>
-  <div style={{ maxWidth: 1240, margin: '0 auto' }}>
+      <section id="programs" style={{ padding: '88px 5%', background: '#fff' }}>
+        <div style={{ maxWidth: 1240, margin: '0 auto' }}>
 
-    {/* Header */}
-    <div style={{ marginBottom: 48 }}>
-      <div className="section-line" />
-      <span className="section-label">What We Offer</span>
-      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
-        <h2 className="serif" style={{ fontSize: 'clamp(1.8rem,3.5vw,2.5rem)', fontWeight: 700, color: '#0A2A4A', maxWidth: 480 }}>
-          Courses Built for Every Goal
-        </h2>
-        <p style={{ color: '#64748B', fontSize: '.93rem', maxWidth: 360, lineHeight: 1.72 }}>
-          From building strong foundations to cracking the toughest entrances — a program for every student.
-        </p>
-      </div>
-    </div>
-
-    {/* ── TABS ── */}
-    <div style={{ display: 'flex', gap: 8, marginBottom: 36, background: '#F1F5F9', borderRadius: 10, padding: 6, width: 'fit-content' }}>
-      {['Classes', 'Entrance Exams'].map((tab, i) => (
-        <button key={i} onClick={() => setActiveTab(i === 0 ? 'classes' : 'entrance')}
-          style={{
-            padding: '10px 28px', borderRadius: 7, border: 'none', cursor: 'pointer',
-            fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: '.9rem',
-            transition: 'all .22s',
-            background: activeTab === (i === 0 ? 'classes' : 'entrance') ? '#fff' : 'transparent',
-            color:      activeTab === (i === 0 ? 'classes' : 'entrance') ? '#0A2A4A' : '#64748B',
-            boxShadow:  activeTab === (i === 0 ? 'classes' : 'entrance') ? '0 2px 8px rgba(0,0,0,.10)' : 'none',
-          }}>
-          {tab}
-        </button>
-      ))}
-    </div>
-
-    {/* ── CLASS CARDS ── */}
-    {activeTab === 'classes' && (
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20 }}>
-        {[
-          { roman: 'IX',   title: 'Class IX',   label: 'Secondary',  color: '#1565A8', light: '#EFF4FF', tags: ['Goa Board', 'NCERT', 'CBSE', 'NEP'],              desc: 'Begin secondary-level learning with structured subject coaching and exam readiness.' },
-          { roman: 'X',    title: 'Class X',    label: 'Board Prep', color: '#0A2A4A', light: '#EEF2FF', tags: ['Goa Board', 'CBSE', 'NEP'],                       desc: 'Focused board exam preparation with mock tests, full coverage, and personalised attention.' },
-          { roman: 'XI',   title: 'Class XI',   label: 'Senior',     color: '#7C3AED', light: '#F5F3FF', tags: ['Physics', 'Chemistry', 'Biology', 'Maths'],        desc: 'Transition to senior secondary with stream specialisation and competitive exam groundwork.' },
-          { roman: 'XII',  title: 'Class XII',  label: 'Final Year', color: '#DC2626', light: '#FFF5F5', tags: ['Physics', 'Chemistry', 'Biology', 'Maths', 'JEE', 'NEET'], desc: 'Intensive final year coaching for boards with simultaneous NEET & JEE preparation.' },
-        ].map((p, i) => (
-          <div key={i} style={{
-            background: '#fff', border: '1.5px solid #E2EBF4', borderRadius: 14,
-            padding: '26px 22px', transition: 'all .25s', position: 'relative', overflow: 'hidden',
-          }}
-            onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,.09)'; e.currentTarget.style.borderColor = p.color; }}
-            onMouseOut={e  => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#E2EBF4'; }}>
-
-            {/* Left color strip */}
-            <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: 4, background: p.color, borderRadius: '14px 0 0 14px' }} />
-
-            {/* Top row */}
-            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14, paddingLeft: 10 }}>
-              <div>
-                <div style={{ fontFamily: 'Playfair Display,serif', fontSize: '1.25rem', fontWeight: 800, color: '#0A2A4A', lineHeight: 1.1 }}>
-                  {p.title}
-                </div>
-                <div style={{ fontSize: '.72rem', fontWeight: 700, color: p.color, textTransform: 'uppercase', letterSpacing: '.07em', marginTop: 4 }}>
-                  {p.label}
-                </div>
-              </div>
-              {/* Roman numeral pill */}
-              <div style={{ background: p.light, border: `1.5px solid ${p.color}33`, borderRadius: 8, padding: '6px 12px', fontFamily: 'Playfair Display,serif', fontWeight: 800, fontSize: '1rem', color: p.color, lineHeight: 1 }}>
-                {p.roman}
-              </div>
+          {/* Header */}
+          <div style={{ marginBottom: 48 }}>
+            <div className="section-line" />
+            <span className="section-label">What We Offer</span>
+            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
+              <h2 className="serif" style={{ fontSize: 'clamp(1.8rem,3.5vw,2.5rem)', fontWeight: 700, color: '#0A2A4A', maxWidth: 480 }}>
+                Courses Built for Every Goal
+              </h2>
+              <p style={{ color: '#64748B', fontSize: '.93rem', maxWidth: 360, lineHeight: 1.72 }}>
+                From building strong foundations to cracking the toughest entrances — a program for every student.
+              </p>
             </div>
+          </div>
 
-            {/* Desc */}
-            <p style={{ color: '#64748B', fontSize: '.87rem', lineHeight: 1.72, marginBottom: 18, paddingLeft: 10 }}>{p.desc}</p>
+          {/* ── TABS ── */}
+          <div style={{ display: 'flex', gap: 8, marginBottom: 36, background: '#F1F5F9', borderRadius: 10, padding: 6, width: 'fit-content' }}>
+            {['Classes', 'Entrance Exams'].map((tab, i) => (
+              <button key={i} onClick={() => setActiveTab(i === 0 ? 'classes' : 'entrance')}
+                style={{
+                  padding: '10px 28px', borderRadius: 7, border: 'none', cursor: 'pointer',
+                  fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: '.9rem',
+                  transition: 'all .22s',
+                  background: activeTab === (i === 0 ? 'classes' : 'entrance') ? '#fff' : 'transparent',
+                  color: activeTab === (i === 0 ? 'classes' : 'entrance') ? '#0A2A4A' : '#64748B',
+                  boxShadow: activeTab === (i === 0 ? 'classes' : 'entrance') ? '0 2px 8px rgba(0,0,0,.10)' : 'none',
+                }}>
+                {tab}
+              </button>
+            ))}
+          </div>
 
-            {/* Tags */}
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, paddingLeft: 10 }}>
-              {p.tags.map((t, j) => (
-                <span key={j} style={{
-                  padding: '4px 11px', borderRadius: 6,
-                  background: p.light, border: `1px solid ${p.color}33`,
-                  fontSize: '.73rem', fontWeight: 700, color: p.color,
-                }}>{t}</span>
+          {/* ── CLASS CARDS ── */}
+          {activeTab === 'classes' && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 20 }}>
+              {[
+                { roman: 'IX', title: 'Class IX', label: 'Secondary', color: '#1565A8', light: '#EFF4FF', tags: ['Goa Board', 'NCERT', 'CBSE', 'NEP'], desc: 'Begin secondary-level learning with structured subject coaching and exam readiness.' },
+                { roman: 'X', title: 'Class X', label: 'Board Prep', color: '#0A2A4A', light: '#EEF2FF', tags: ['Goa Board', 'CBSE', 'NEP'], desc: 'Focused board exam preparation with mock tests, full coverage, and personalised attention.' },
+                { roman: 'XI', title: 'Class XI', label: 'Senior', color: '#7C3AED', light: '#F5F3FF', tags: ['Physics', 'Chemistry', 'Biology', 'Maths'], desc: 'Transition to senior secondary with stream specialisation and competitive exam groundwork.' },
+                { roman: 'XII', title: 'Class XII', label: 'Final Year', color: '#DC2626', light: '#FFF5F5', tags: ['Physics', 'Chemistry', 'Biology', 'Maths', 'JEE', 'NEET'], desc: 'Intensive final year coaching for boards with simultaneous NEET & JEE preparation.' },
+              ].map((p, i) => (
+                <div key={i} style={{
+                  background: '#fff', border: '1.5px solid #E2EBF4', borderRadius: 14,
+                  padding: '26px 22px', transition: 'all .25s', position: 'relative', overflow: 'hidden',
+                }}
+                  onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,.09)'; e.currentTarget.style.borderColor = p.color; }}
+                  onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#E2EBF4'; }}>
+
+                  {/* Left color strip */}
+                  <div style={{ position: 'absolute', top: 0, left: 0, bottom: 0, width: 4, background: p.color, borderRadius: '14px 0 0 14px' }} />
+
+                  {/* Top row */}
+                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 14, paddingLeft: 10 }}>
+                    <div>
+                      <div style={{ fontFamily: 'Playfair Display,serif', fontSize: '1.25rem', fontWeight: 800, color: '#0A2A4A', lineHeight: 1.1 }}>
+                        {p.title}
+                      </div>
+                      <div style={{ fontSize: '.72rem', fontWeight: 700, color: p.color, textTransform: 'uppercase', letterSpacing: '.07em', marginTop: 4 }}>
+                        {p.label}
+                      </div>
+                    </div>
+                    {/* Roman numeral pill */}
+                    <div style={{ background: p.light, border: `1.5px solid ${p.color}33`, borderRadius: 8, padding: '6px 12px', fontFamily: 'Playfair Display,serif', fontWeight: 800, fontSize: '1rem', color: p.color, lineHeight: 1 }}>
+                      {p.roman}
+                    </div>
+                  </div>
+
+                  {/* Desc */}
+                  <p style={{ color: '#64748B', fontSize: '.87rem', lineHeight: 1.72, marginBottom: 18, paddingLeft: 10 }}>{p.desc}</p>
+
+                  {/* Tags */}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, paddingLeft: 10 }}>
+                    {p.tags.map((t, j) => (
+                      <span key={j} style={{
+                        padding: '4px 11px', borderRadius: 6,
+                        background: p.light, border: `1px solid ${p.color}33`,
+                        fontSize: '.73rem', fontWeight: 700, color: p.color,
+                      }}>{t}</span>
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
-          </div>
-        ))}
-      </div>
-    )}
+          )}
 
-    {/* ── ENTRANCE CARDS ── */}
-    {activeTab === 'entrance' && (
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 24 }}>
-        {[
-          {
-            id: 'NEET',
-            title: 'NEET Coaching',
-            subtitle: 'Medical Entrance Exam',
-            color: '#DC2626',
-            light: '#FFF5F5',
-            border: '#FECACA',
-            gradient: 'linear-gradient(135deg, #DC2626, #B91C1C)',
-            desc: 'Specialized preparation for medical entrances with deep, concept-driven coverage of Physics, Chemistry & Biology. Our NEET batch follows a structured timetable with weekly tests, doubt sessions, and exam strategy coaching to maximize your score.',
-            tags: ['Physics', 'Chemistry', 'Biology', 'PCB', 'Medical'],
-            highlights: ['Weekly full syllabus tests', 'Dedicated doubt clearing sessions', 'NCERT-focused approach', 'Previous year paper analysis'],
-          },
-          {
-            id: 'JEE',
-            title: 'JEE Coaching',
-            subtitle: 'Engineering Entrance Exam',
-            color: '#2563EB',
-            light: '#EFF6FF',
-            border: '#BFDBFE',
-            gradient: 'linear-gradient(135deg, #2563EB, #1D4ED8)',
-            desc: 'Strategic JEE preparation with advanced problem-solving techniques across PCM. We focus on building strong conceptual understanding alongside speed and accuracy — the two pillars of cracking JEE Mains and Advanced.',
-            tags: ['Physics', 'Chemistry', 'Maths', 'PCM', 'Engineering'],
-            highlights: ['Concept-first teaching approach', 'JEE Mains & Advanced coverage', 'Speed & accuracy drills', 'Topic-wise mock tests'],
-          },
-        ].map((p, i) => (
-          <div key={i} style={{
-            background: '#fff', border: `2px solid ${p.border}`,
-            borderRadius: 16, overflow: 'hidden',
-            boxShadow: '0 4px 20px rgba(0,0,0,.06)',
-            transition: 'all .28s',
-          }}
-            onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = `0 24px 56px ${p.color}22`; }}
-            onMouseOut={e  => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,.06)'; }}>
+          {/* ── ENTRANCE CARDS ── */}
+          {activeTab === 'entrance' && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 24 }}>
+              {[
+                {
+                  id: 'NEET',
+                  title: 'NEET Coaching',
+                  subtitle: 'Medical Entrance Exam',
+                  color: '#DC2626',
+                  light: '#FFF5F5',
+                  border: '#FECACA',
+                  gradient: 'linear-gradient(135deg, #DC2626, #B91C1C)',
+                  desc: 'Specialized preparation for medical entrances with deep, concept-driven coverage of Physics, Chemistry & Biology. Our NEET batch follows a structured timetable with weekly tests, doubt sessions, and exam strategy coaching to maximize your score.',
+                  tags: ['Physics', 'Chemistry', 'Biology', 'PCB', 'Medical'],
+                  highlights: ['Weekly full syllabus tests', 'Dedicated doubt clearing sessions', 'NCERT-focused approach', 'Previous year paper analysis'],
+                },
+                {
+                  id: 'JEE',
+                  title: 'JEE Coaching',
+                  subtitle: 'Engineering Entrance Exam',
+                  color: '#2563EB',
+                  light: '#EFF6FF',
+                  border: '#BFDBFE',
+                  gradient: 'linear-gradient(135deg, #2563EB, #1D4ED8)',
+                  desc: 'Strategic JEE preparation with advanced problem-solving techniques across PCM. We focus on building strong conceptual understanding alongside speed and accuracy — the two pillars of cracking JEE Mains and Advanced.',
+                  tags: ['Physics', 'Chemistry', 'Maths', 'PCM', 'Engineering'],
+                  highlights: ['Concept-first teaching approach', 'JEE Mains & Advanced coverage', 'Speed & accuracy drills', 'Topic-wise mock tests'],
+                },
+              ].map((p, i) => (
+                <div key={i} style={{
+                  background: '#fff', border: `2px solid ${p.border}`,
+                  borderRadius: 16, overflow: 'hidden',
+                  boxShadow: '0 4px 20px rgba(0,0,0,.06)',
+                  transition: 'all .28s',
+                }}
+                  onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = `0 24px 56px ${p.color}22`; }}
+                  onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,.06)'; }}>
 
-            {/* Gradient header */}
-            <div style={{ background: p.gradient, padding: '28px 28px 24px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-                <div style={{ background: 'rgba(255,255,255,.18)', border: '1.5px solid rgba(255,255,255,.28)', borderRadius: 8, padding: '6px 14px', fontFamily: 'Playfair Display,serif', fontWeight: 800, fontSize: '1.1rem', color: '#fff', letterSpacing: '.04em' }}>
-                  {p.id}
-                </div>
-                <div style={{ fontSize: '.75rem', fontWeight: 700, color: 'rgba(255,255,255,.75)', textTransform: 'uppercase', letterSpacing: '.08em' }}>
-                  {p.subtitle}
-                </div>
-              </div>
-              <div style={{ fontFamily: 'Playfair Display,serif', fontSize: '1.5rem', fontWeight: 700, color: '#fff' }}>
-                {p.title}
-              </div>
-            </div>
-
-            {/* Body */}
-            <div style={{ padding: '24px 28px' }}>
-              <p style={{ color: '#475569', fontSize: '.9rem', lineHeight: 1.78, marginBottom: 22 }}>{p.desc}</p>
-
-              {/* Highlights */}
-              <div style={{ marginBottom: 22 }}>
-                {p.highlights.map((h, j) => (
-                  <div key={j} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 9 }}>
-                    <div style={{ width: 20, height: 20, borderRadius: '50%', background: p.light, border: `1.5px solid ${p.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <div style={{ width: 7, height: 7, borderRadius: '50%', background: p.color }} />
+                  {/* Gradient header */}
+                  <div style={{ background: p.gradient, padding: '28px 28px 24px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                      <div style={{ background: 'rgba(255,255,255,.18)', border: '1.5px solid rgba(255,255,255,.28)', borderRadius: 8, padding: '6px 14px', fontFamily: 'Playfair Display,serif', fontWeight: 800, fontSize: '1.1rem', color: '#fff', letterSpacing: '.04em' }}>
+                        {p.id}
+                      </div>
+                      <div style={{ fontSize: '.75rem', fontWeight: 700, color: 'rgba(255,255,255,.75)', textTransform: 'uppercase', letterSpacing: '.08em' }}>
+                        {p.subtitle}
+                      </div>
                     </div>
-                    <span style={{ fontSize: '.86rem', color: '#334155', fontWeight: 500 }}>{h}</span>
+                    <div style={{ fontFamily: 'Playfair Display,serif', fontSize: '1.5rem', fontWeight: 700, color: '#fff' }}>
+                      {p.title}
+                    </div>
                   </div>
-                ))}
-              </div>
 
-              {/* Tags */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
-                {p.tags.map((t, j) => (
-                  <span key={j} style={{
-                    padding: '5px 13px', borderRadius: 6,
-                    background: p.light, border: `1px solid ${p.border}`,
-                    fontSize: '.75rem', fontWeight: 700, color: p.color,
-                  }}>{t}</span>
-                ))}
-              </div>
+                  {/* Body */}
+                  <div style={{ padding: '24px 28px' }}>
+                    <p style={{ color: '#475569', fontSize: '.9rem', lineHeight: 1.78, marginBottom: 22 }}>{p.desc}</p>
 
-              {/* CTA */}
-              <a href="#contact" style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                marginTop: 22, padding: '12px', borderRadius: 8,
-                background: p.gradient, color: '#fff',
-                fontWeight: 700, fontSize: '.9rem', textDecoration: 'none',
-                transition: 'opacity .2s',
-              }}
-                onMouseOver={e => e.currentTarget.style.opacity = '.88'}
-                onMouseOut={e  => e.currentTarget.style.opacity = '1'}>
-                Enroll in {p.title} <ArrowRight size={16} />
-              </a>
+                    {/* Highlights */}
+                    <div style={{ marginBottom: 22 }}>
+                      {p.highlights.map((h, j) => (
+                        <div key={j} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 9 }}>
+                          <div style={{ width: 20, height: 20, borderRadius: '50%', background: p.light, border: `1.5px solid ${p.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                            <div style={{ width: 7, height: 7, borderRadius: '50%', background: p.color }} />
+                          </div>
+                          <span style={{ fontSize: '.86rem', color: '#334155', fontWeight: 500 }}>{h}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Tags */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 7 }}>
+                      {p.tags.map((t, j) => (
+                        <span key={j} style={{
+                          padding: '5px 13px', borderRadius: 6,
+                          background: p.light, border: `1px solid ${p.border}`,
+                          fontSize: '.75rem', fontWeight: 700, color: p.color,
+                        }}>{t}</span>
+                      ))}
+                    </div>
+
+                    {/* CTA */}
+                    <a href="#contact" style={{
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                      marginTop: 22, padding: '12px', borderRadius: 8,
+                      background: p.gradient, color: '#fff',
+                      fontWeight: 700, fontSize: '.9rem', textDecoration: 'none',
+                      transition: 'opacity .2s',
+                    }}
+                      onMouseOver={e => e.currentTarget.style.opacity = '.88'}
+                      onMouseOut={e => e.currentTarget.style.opacity = '1'}>
+                      Enroll in {p.title} <ArrowRight size={16} />
+                    </a>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
-        ))}
-      </div>
-    )}
+          )}
 
-  </div>
-</section>
+        </div>
+      </section>
 
       {/* ══ TESTIMONIALS ══ */}
       <section style={{ padding: '86px 5%', background: '#fff' }}>
@@ -618,7 +618,7 @@ export default function AfterSchoolGoa() {
               { name: 'Sneha K.', grade: 'Class X · Board Exams', quote: 'I scored 94% in boards thanks to AfterSchool. The study materials, practice tests, and caring teachers made me feel so prepared and confident.' },
             ].map((t, i) => (
               <div key={i} className="testi-card">
-                <div style={{ display: 'flex', gap: 2, marginBottom: 13 }}>{[1,2,3,4,5].map(s => <Star key={s} fill="#FFC107" color="#FFC107" size={16} />)}</div>
+                <div style={{ display: 'flex', gap: 2, marginBottom: 13 }}>{[1, 2, 3, 4, 5].map(s => <Star key={s} fill="#FFC107" color="#FFC107" size={16} />)}</div>
                 <p style={{ color: '#4A7A9B', lineHeight: 1.78, fontSize: '0.92rem', marginBottom: 20, fontStyle: 'italic' }}>{t.quote}</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
                   <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg,#29ABE2,#1a7fb0)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: '0.95rem' }}>{t.name[0]}</div>
@@ -634,77 +634,75 @@ export default function AfterSchoolGoa() {
       </section>
 
       {/* ══ FACULTY ══ */}
-     <section style={{ padding: '88px 5%', background: '#F8FAFC' }}>
-  <div style={{ maxWidth: 950, margin: '0 auto' }}>
+      <section style={{ padding: '88px 5%', background: '#F8FAFC' }}>
+        <div style={{ maxWidth: 950, margin: '0 auto' }}>
 
-    <div style={{ marginBottom: 46, textAlign: 'center' }}>
-      <div className="section-line" style={{ margin: '0 auto 14px' }} />
-      <span className="section-label">Our Team</span>
-      <h2 className="serif" style={{ fontSize: 'clamp(1.8rem,3.5vw,2.5rem)', fontWeight: 700, color: '#0A2A4A' }}>
-        Learn from the Best
-      </h2>
-    </div>
-
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: 20 }}>
-      {[
-        { image: '/faculty/aamir.jpeg',    name: 'Mr. Aamir Jakati',        role: 'Founder & CEO',           qualification: 'B.Sc-B.Ed, M.Sc (Zoology)',     subjects: 'Chemistry & Biology', experience: '10+ Years' },
-        { image: '/faculty/ayesh.jpeg',    name: 'Mr. Ayesh Jamadar',       role: 'Head of Operations',      qualification: 'I.T Engineer',                  subjects: 'Technical Head',      experience: '5+ Years'  },
-        { image: '/faculty/siddhant.jpg', name: 'Mr. Siddhant Salgaonkar', role: 'Branch Head (Sanquelim)', qualification: 'B.Sc-B.Ed, M.Sc (Mathematics)', subjects: 'Chemistry & Maths',   experience: '6+ Years'  },
-        { image: '/faculty/aaisha.jpg',   name: 'Mrs. Aaisha Jakati',      role: 'Branch Head (Valpoi)',    qualification: 'B.Sc-B.Ed (Physics)',            subjects: 'Physics & Maths',     experience: '6+ Years'  },
-        { image: '/faculty/rukhsar.jpg',  name: 'Miss. Rukhsar Khan',      role: 'Senior Tutor',            qualification: 'B.A',                           subjects: 'English & Hindi',     experience: '4+ Years'  },
-        { image: '/faculty/faiza.jpg',    name: 'Miss. Faiza Khan',        role: 'Junior Tutor',            qualification: 'B.Sc (Physics)',                subjects: 'Science & Maths',     experience: '1+ Years'  },
-        { image: '/faculty/nuva.jpg',     name: 'Mr. Nuva Shaikh',         role: 'Junior Tutor',            qualification: 'B.Com',                         subjects: 'Social Sciences',     experience: '1+ Years'  },
-      ].map((f, i) => (
-        <div key={i}
-          style={{ background: '#fff', borderRadius: 12, padding: '32px 22px', textAlign: 'center', border: '1.5px solid #E2EBF4', transition: 'all .25s' }}
-          onMouseOver={e => { e.currentTarget.style.boxShadow = '0 12px 32px rgba(41,171,226,.12)'; e.currentTarget.style.borderColor = '#29ABE2'; e.currentTarget.style.transform = 'translateY(-5px)'; }}
-          onMouseOut={e  => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#E2EBF4'; e.currentTarget.style.transform = 'translateY(0)'; }}>
-
-          {/* Photo — initials fallback if image missing */}
-          <div style={{ width: 100, height: 100, borderRadius: '50%', margin: '0 auto 16px', overflow: 'hidden', border: '3px solid #E2EBF4', boxShadow: '0 8px 20px rgba(41,171,226,.20)', background: 'linear-gradient(135deg,#29ABE2,#1565A8)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <img
-              src={f.image}
-              alt={f.name}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-              onError={e => {
-                e.target.style.display = 'none';
-                const initials = f.name.split(' ').slice(1, 3).map(n => n[0]).join('');
-                e.target.parentElement.innerHTML = `<span style="color:#fff;font-weight:800;font-size:1.3rem;font-family:'Playfair Display',serif">${initials}</span>`;
-              }}
-            />
+          <div style={{ marginBottom: 46, textAlign: 'center' }}>
+            <div className="section-line" style={{ margin: '0 auto 14px' }} />
+            <span className="section-label">Our Team</span>
+            <h2 className="serif" style={{ fontSize: 'clamp(1.8rem,3.5vw,2.5rem)', fontWeight: 700, color: '#0A2A4A' }}>
+              Learn from the Best
+            </h2>
           </div>
 
-          {/* Name */}
-          <div style={{ fontFamily: 'Playfair Display,serif', fontSize: '1.05rem', fontWeight: 700, color: '#0A2A4A', marginBottom: 4 }}>
-            {f.name}
-          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: 20 }}>
+            {[
+              { image: '/faculty/aamir.jpeg', name: 'Mr. Aamir Jakati', role: 'Founder & CEO', qualification: 'B.Sc-B.Ed, M.Sc (Zoology)', subjects: 'Chemistry & Biology', experience: '10+ Years' },
+              { image: '/faculty/ayesh.jpeg', name: 'Mr. Ayesh Jamadar', role: 'Head of Operations', qualification: 'I.T Engineer', subjects: 'Technical Head', experience: '5+ Years' },
+              { image: '/faculty/siddhant.jpg', name: 'Mr. Siddhant Salgaonkar', role: 'Branch Head (Sanquelim)', qualification: 'B.Sc-B.Ed, M.Sc (Mathematics)', subjects: 'Chemistry & Maths', experience: '6+ Years' },
+              { image: '/faculty/aaisha.jpg', name: 'Mrs. Aaisha Jakati', role: 'Branch Head (Valpoi)', qualification: 'B.Sc-B.Ed (Physics)', subjects: 'Physics & Maths', experience: '6+ Years' },
+              { image: '/faculty/faiza.jpg', name: 'Miss. Faiza Khan', role: 'Junior Tutor', qualification: 'B.Sc (Physics)', subjects: 'Science & Maths', experience: '1+ Years' },
+            ].map((f, i) => (
+              <div key={i}
+                style={{ background: '#fff', borderRadius: 12, padding: '32px 22px', textAlign: 'center', border: '1.5px solid #E2EBF4', transition: 'all .25s' }}
+                onMouseOver={e => { e.currentTarget.style.boxShadow = '0 12px 32px rgba(41,171,226,.12)'; e.currentTarget.style.borderColor = '#29ABE2'; e.currentTarget.style.transform = 'translateY(-5px)'; }}
+                onMouseOut={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#E2EBF4'; e.currentTarget.style.transform = 'translateY(0)'; }}>
 
-          {/* Role */}
-          <div style={{ fontSize: '.75rem', fontWeight: 700, color: '#29ABE2', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '.06em' }}>
-            {f.role}
-          </div>
+                {/* Photo — initials fallback if image missing */}
+                <div style={{ width: 100, height: 100, borderRadius: '50%', margin: '0 auto 16px', overflow: 'hidden', border: '3px solid #E2EBF4', boxShadow: '0 8px 20px rgba(41,171,226,.20)', background: 'linear-gradient(135deg,#29ABE2,#1565A8)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <img
+                    src={f.image}
+                    alt={f.name}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    onError={e => {
+                      e.target.style.display = 'none';
+                      const initials = f.name.split(' ').slice(1, 3).map(n => n[0]).join('');
+                      e.target.parentElement.innerHTML = `<span style="color:#fff;font-weight:800;font-size:1.3rem;font-family:'Playfair Display',serif">${initials}</span>`;
+                    }}
+                  />
+                </div>
 
-          {/* Qualification */}
-          <div style={{ fontSize: '.85rem', color: '#64748B', marginBottom: 4 }}>
-            {f.qualification}
-          </div>
+                {/* Name */}
+                <div style={{ fontFamily: 'Playfair Display,serif', fontSize: '1.05rem', fontWeight: 700, color: '#0A2A4A', marginBottom: 4 }}>
+                  {f.name}
+                </div>
 
-          {/* Subjects */}
-          <div style={{ fontSize: '.85rem', color: '#64748B', marginBottom: 4 }}>
-            {f.subjects}
-          </div>
+                {/* Role */}
+                <div style={{ fontSize: '.75rem', fontWeight: 700, color: '#29ABE2', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '.06em' }}>
+                  {f.role}
+                </div>
 
-          {/* Experience */}
-          <div style={{ fontSize: '.78rem', color: '#94A3B8', fontWeight: 600 }}>
-            {f.experience}
+                {/* Qualification */}
+                <div style={{ fontSize: '.85rem', color: '#64748B', marginBottom: 4 }}>
+                  {f.qualification}
+                </div>
+
+                {/* Subjects */}
+                <div style={{ fontSize: '.85rem', color: '#64748B', marginBottom: 4 }}>
+                  {f.subjects}
+                </div>
+
+                {/* Experience */}
+                <div style={{ fontSize: '.78rem', color: '#94A3B8', fontWeight: 600 }}>
+                  {f.experience}
+                </div>
+
+              </div>
+            ))}
           </div>
 
         </div>
-      ))}
-    </div>
-
-  </div>
-</section>
+      </section>
 
       {/* ══ APP ══ */}
       <section id="app" style={{ padding: '86px 5%', background: '#fff' }}>
@@ -737,7 +735,7 @@ export default function AfterSchoolGoa() {
                     <div style={{ width: 60, height: 4, background: '#29ABE2', borderRadius: 2, opacity: 0.4 }} />
                   </div>
                   <img src="/app-screenshot.png" alt="App" style={{ flex: 1, width: '100%', objectFit: 'cover' }}
-                    onError={e => { e.target.style.display='none'; e.target.parentElement.style.cssText += 'align-items:center;justify-content:center;'; e.target.insertAdjacentHTML('afterend', '<div style="text-align:center;padding:28px;color:#fff"><div style="display:flex;justify-content:center;margin-bottom:10px"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></div><div style="font-weight:700;font-size:0.9rem">AfterSchool App</div></div>'); }} />
+                    onError={e => { e.target.style.display = 'none'; e.target.parentElement.style.cssText += 'align-items:center;justify-content:center;'; e.target.insertAdjacentHTML('afterend', '<div style="text-align:center;padding:28px;color:#fff"><div style="display:flex;justify-content:center;margin-bottom:10px"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></div><div style="font-weight:700;font-size:0.9rem">AfterSchool App</div></div>'); }} />
                 </div>
                 <div className="float-3" style={{ position: 'absolute', top: -14, right: -22, background: '#FFC107', color: '#0A2A4A', borderRadius: 13, padding: '7px 13px', fontWeight: 800, fontSize: '0.78rem', boxShadow: '0 6px 16px rgba(255,193,7,0.35)', display: 'flex', alignItems: 'center', gap: 5 }}>
                   <CheckCircle size={14} /> Free Download
@@ -823,7 +821,7 @@ export default function AfterSchoolGoa() {
       <footer style={{ background: '#0A2A4A', color: '#A8D8F0', padding: '44px 5% 28px', textAlign: 'center' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto' }}>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 11, marginBottom: 10 }}>
-            <img src="LOGO-removebg-preview (1).png" alt="Logo" style={{ height: 38, width: 38, objectFit: 'contain', filter: 'brightness(0) invert(1)' }} onError={e => e.target.style.display='none'} />
+            <img src="LOGO-removebg-preview (1).png" alt="Logo" style={{ height: 38, width: 38, objectFit: 'contain', filter: 'brightness(0) invert(1)' }} onError={e => e.target.style.display = 'none'} />
             <div style={{ fontFamily: 'Playfair Display,serif', fontSize: '1.25rem', fontWeight: 700, color: '#fff' }}>After-School Coaching Classes</div>
           </div>
           <p style={{ color: '#29ABE2', fontWeight: 700, fontSize: '0.79rem', marginBottom: 14, letterSpacing: '0.07em' }}>ESTD: 2022 · VALPOI, GOA · IX · X · XI · XII · NEET · JEE</p>
