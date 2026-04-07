@@ -127,7 +127,7 @@ export default function AfterSchoolGoa() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
+        html, body { scroll-behavior: smooth; overflow-x: hidden; width: 100%; }
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-track { background: #F0F8FF; }
         ::-webkit-scrollbar-thumb { background: #29ABE2; border-radius: 3px; }
@@ -284,6 +284,7 @@ export default function AfterSchoolGoa() {
           .mob-menu-btn { display: block !important; }
           .hero-grid, .app-grid, .contact-grid { grid-template-columns: 1fr !important; }
           .hero-right, .app-right { display: none !important; }
+          .stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
         }
         @media (min-width: 769px) {
           .mob-menu-btn { display: none !important; }
@@ -356,7 +357,7 @@ export default function AfterSchoolGoa() {
               <a href="#contact" className="btn-blue">Enroll Now <Rocket size={16} /></a>
               <a href="#programs" className="btn-outline">Explore Courses</a>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12 }}>
+            <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12 }}>
               {[{ num: '4+', label: 'Years' }, { num: '1000+', label: 'Students' }, { num: '8+', label: 'Subjects' }, { num: '100%', label: 'Dedication' }].map((s, i) => (
                 <div key={i} className="stat-pill">
                   <div style={{ fontFamily: 'Playfair Display,serif', fontSize: '1.65rem', fontWeight: 700, color: '#29ABE2' }}>{s.num}</div>
