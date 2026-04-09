@@ -651,7 +651,6 @@ export default function AfterSchoolGoa() {
               { image: '/faculty/ayesh.jpeg', name: 'Mr. Ayesh Jamadar', role: 'Head of Operations', qualification: 'I.T Engineer', subjects: 'Technical Head', experience: '5+ Years' },
               { image: '/faculty/siddhant.jpeg', name: 'Mr. Siddhant Salgaonkar', role: 'Branch Head (Sanquelim)', qualification: 'B.Sc-B.Ed, M.Sc (Mathematics)', subjects: 'Chemistry & Maths', experience: '6+ Years' },
               { image: '/faculty/aaisha.jpg', name: 'Mrs. Aaisha Jakati', role: 'Branch Head (Valpoi)', qualification: 'B.Sc-B.Ed (Physics)', subjects: 'Physics & Maths', experience: '6+ Years' },
-              { image: '/faculty/faiza.jpg', name: 'Miss. Faiza Khan', role: 'Junior Tutor', qualification: 'B.Sc (Physics)', subjects: 'Science & Maths', experience: '1+ Years' },
             ].map((f, i) => (
               <div key={i}
                 style={{ background: '#fff', borderRadius: 12, padding: '32px 22px', textAlign: 'center', border: '1.5px solid #E2EBF4', transition: 'all .25s' }}
